@@ -1644,7 +1644,7 @@
             const targetTimeStr = sourceDate.toLocaleString('en-US', targetOptions);
             const targetDateStr = sourceDate.toLocaleString('en-US', dateOptions);
             
-            // Calculate time difference using a simpler method
+            // Calculate time difference using a more reliable method
             const sourceTime = new Date(sourceDate.toLocaleString('en-US', { timeZone: fromTz }));
             const targetTime = new Date(sourceDate.toLocaleString('en-US', { timeZone: toTz }));
             const diffMs = targetTime.getTime() - sourceTime.getTime();
@@ -1666,9 +1666,11 @@
         }
         
         function getTimezoneOffset(date, timezone) {
-            const tzDate = new Date(date.toLocaleString('en-US', { timeZone: timezone }));
-            const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
-            return (tzDate - utcDate) / 60000; // Convert to minutes
+            // Get the timezone offset in minutes
+            const utc = new Date(date.getTime() + (date.getTimezoneOffset() * 60000));
+            const target = new Date(utc.toLocaleString('en-US', { timeZone: timezone }));
+            const source = new Date(utc.toLocaleString('en-US', { timeZone: 'UTC' }));
+            return (target - source) / 60000; // Convert to minutes
         }
 
         // Validate inputs
