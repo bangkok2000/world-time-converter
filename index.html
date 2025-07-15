@@ -666,16 +666,10 @@
 
         .footer-content {
             display: flex;
-            justify-content: space-between;
+            justify-content: center;
             align-items: center;
             flex-wrap: wrap;
             gap: 20px;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
         }
     </style>
 </head>
@@ -1299,12 +1293,6 @@
                 <div class="footer-copyright">
                     © 2025 <a href="https://intriq.cloud" target="_blank" rel="noopener">Intriq.cloud</a>. All rights reserved.
                 </div>
-                <div class="footer-links">
-                    <a href="https://intriq.cloud" target="_blank" rel="noopener">About</a>
-                    <a href="https://intriq.cloud/contact" target="_blank" rel="noopener">Contact</a>
-                    <a href="https://intriq.cloud/privacy" target="_blank" rel="noopener">Privacy Policy</a>
-                    <a href="https://intriq.cloud/terms" target="_blank" rel="noopener">Terms of Service</a>
-                </div>
             </div>
         </footer>
     </div>
@@ -1611,7 +1599,7 @@
             const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
             const timeStr = `${String(hour24).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}:00`;
             
-            // Create date in source timezone
+            // Create a date object representing the time in the source timezone
             const sourceDate = new Date(`${dateStr}T${timeStr}`);
             
             // Get timezone names from select options
@@ -1655,15 +1643,15 @@
             const targetTimeStr = sourceDate.toLocaleString('en-US', targetOptions);
             const targetDateStr = sourceDate.toLocaleString('en-US', dateOptions);
             
-            // Calculate time difference
-            const sourceOffset = getTimezoneOffset(sourceDate, fromTz);
-            const targetOffset = getTimezoneOffset(sourceDate, toTz);
-            const diffHours = Math.round((targetOffset - sourceOffset) / 60);
+            // Calculate time difference using a more accurate method
+            const sourceTime = new Date(sourceDate.toLocaleString('en-US', { timeZone: fromTz }));
+            const targetTime = new Date(sourceDate.toLocaleString('en-US', { timeZone: toTz }));
+            const diffMs = targetTime.getTime() - sourceTime.getTime();
+            const diffHours = Math.round(diffMs / (1000 * 60 * 60));
             
             let diffText = '';
             if (diffHours !== 0) {
                 const absDiff = Math.abs(diffHours);
-                const sign = diffHours > 0 ? '+' : '-';
                 diffText = `<div class="result-diff">${toLocation} is ${absDiff} hour${absDiff !== 1 ? 's' : ''} ${diffHours > 0 ? 'ahead of' : 'behind'} ${fromLocation}</div>`;
             }
             
