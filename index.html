@@ -93,6 +93,7 @@
             width: 100%;
             max-width: 1200px;
             margin: 0 auto;
+            padding-bottom: 80px;
         }
 
         .ad-banner {
@@ -631,27 +632,27 @@
             }
 
             .footer {
-                margin-top: 30px;
-                padding: 15px;
+                padding: 12px;
             }
 
-            .footer-content {
-                flex-direction: column;
-                gap: 15px;
-            }
-
-            .footer-links {
-                justify-content: center;
+            .page-wrapper {
+                padding-bottom: 70px;
             }
         }
 
         .footer {
-            margin-top: 40px;
-            padding: 20px;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            padding: 15px;
             text-align: center;
             color: rgba(255, 255, 255, 0.8);
             font-size: 0.9em;
+            background: rgba(15, 32, 39, 0.9);
+            backdrop-filter: blur(10px);
             border-top: 1px solid rgba(255, 255, 255, 0.1);
+            z-index: 100;
         }
 
         .footer a {
@@ -1643,11 +1644,10 @@
             const targetTimeStr = sourceDate.toLocaleString('en-US', targetOptions);
             const targetDateStr = sourceDate.toLocaleString('en-US', dateOptions);
             
-            // Calculate time difference using a more accurate method
-            const sourceTime = new Date(sourceDate.toLocaleString('en-US', { timeZone: fromTz }));
-            const targetTime = new Date(sourceDate.toLocaleString('en-US', { timeZone: toTz }));
-            const diffMs = targetTime.getTime() - sourceTime.getTime();
-            const diffHours = Math.round(diffMs / (1000 * 60 * 60));
+            // Calculate time difference correctly
+            const sourceOffset = getTimezoneOffset(sourceDate, fromTz);
+            const targetOffset = getTimezoneOffset(sourceDate, toTz);
+            const diffHours = Math.round((targetOffset - sourceOffset) / 60);
             
             let diffText = '';
             if (diffHours !== 0) {
