@@ -1,0 +1,1385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Advanced Time Zone Converter</title>
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-4025415364499898"
+     crossorigin="anonymous"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .page-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .ad-banner {
+            width: 100%;
+            max-width: 728px;
+            height: 90px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 20px;
+            width: 100%;
+            align-items: flex-start;
+        }
+
+        .ad-sidebar {
+            width: 160px;
+            height: 600px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9em;
+            flex-shrink: 0;
+        }
+
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.2);
+            padding: 40px;
+            max-width: 700px;
+            width: 100%;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            background: linear-gradient(135deg, #203a43 0%, #2c5364 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 10px;
+            font-size: 2.8em;
+            font-weight: 800;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .time-section {
+            margin-bottom: 25px;
+            padding: 25px;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .time-section:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .section-title {
+            font-size: 1.3em;
+            color: #2c5364;
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .time-picker {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .time-display {
+            font-size: 3em;
+            font-weight: 700;
+            color: #203a43;
+            background: white;
+            padding: 15px 30px;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            min-width: 250px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .time-display:hover {
+            transform: scale(1.02);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+
+        .time-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .time-button {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #2c5364;
+        }
+
+        .time-button:hover {
+            background: #2c5364;
+            color: white;
+            border-color: #2c5364;
+            transform: translateX(5px);
+        }
+
+        .quick-times {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 20px;
+        }
+
+        .quick-time {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 8px 16px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #666;
+        }
+
+        .quick-time:hover {
+            background: #203a43;
+            color: white;
+            border-color: #203a43;
+            transform: translateY(-2px);
+        }
+
+        .quick-time.active {
+            background: #2c5364;
+            color: white;
+            border-color: #2c5364;
+        }
+
+        .timezone-selector {
+            position: relative;
+        }
+
+        .timezone-search {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1em;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .timezone-search:focus {
+            outline: none;
+            border-color: #2c5364;
+            box-shadow: 0 0 0 3px rgba(44, 83, 100, 0.1);
+        }
+
+        select {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1em;
+            background-color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 15px center;
+            background-size: 20px;
+            padding-right: 45px;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #2c5364;
+            box-shadow: 0 0 0 3px rgba(44, 83, 100, 0.1);
+        }
+
+        .convert-button {
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 25px 0;
+            position: relative;
+            overflow: hidden;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .convert-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .convert-button:active {
+            transform: translateY(-1px);
+        }
+
+        .result-section {
+            padding: 30px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 20px;
+            text-align: center;
+            min-height: 120px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s ease;
+            color: white;
+        }
+
+        .result-content {
+            animation: slideIn 0.6s ease-out;
+        }
+
+        .result-time {
+            font-size: 2.5em;
+            font-weight: 800;
+            margin-bottom: 10px;
+        }
+
+        .result-date {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .result-diff {
+            font-size: 1em;
+            margin-top: 10px;
+            opacity: 0.8;
+        }
+
+        .placeholder {
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.2em;
+        }
+
+        .current-time {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #666;
+            font-size: 1em;
+            font-weight: 600;
+        }
+
+        .time-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .time-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            animation: modalIn 0.3s ease-out;
+        }
+
+        @keyframes modalIn {
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            margin-bottom: 20px;
+            color: #2c5364;
+            font-weight: 700;
+        }
+
+        .time-input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .time-input-item {
+            text-align: center;
+        }
+
+        .time-input-label {
+            font-size: 0.9em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .time-input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1.5em;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .time-input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-button.save {
+            background: #667eea;
+            color: white;
+        }
+
+        .modal-button.save:hover {
+            background: #764ba2;
+        }
+
+        .modal-button.cancel {
+            background: #e0e0e0;
+            color: #666;
+        }
+
+        .modal-button.cancel:hover {
+            background: #d0d0d0;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                padding: 25px;
+            }
+            
+            h1 {
+                font-size: 2.2em;
+            }
+            
+            .time-display {
+                font-size: 2.2em;
+                min-width: 200px;
+            }
+            
+            .time-picker {
+                flex-direction: column;
+            }
+            
+            .quick-times {
+                justify-content: center;
+            }
+
+            .main-content {
+                flex-direction: column;
+            }
+
+            .ad-sidebar {
+                width: 100%;
+                height: 250px;
+                order: -1;
+            }
+
+            .ad-banner {
+                height: 100px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="page-wrapper">
+        <div class="ad-banner">
+            <ins class="adsbygoogle"
+                 style="display:block"
+                 data-ad-client="ca-pub-4025415364499898"
+                 data-ad-slot="YOUR_AD_SLOT_ID"
+                 data-ad-format="auto"
+                 data-full-width-responsive="true"></ins>
+            <script>
+                 (adsbygoogle = window.adsbygoogle || []).push({});
+            </script>
+        </div>
+        
+        <div class="main-content">
+            <div class="ad-sidebar">
+                <ins class="adsbygoogle"
+                     style="display:block"
+                     data-ad-client="ca-pub-4025415364499898"
+                     data-ad-slot="YOUR_SIDEBAR_AD_SLOT_ID"
+                     data-ad-format="auto"></ins>
+                <script>
+                     (adsbygoogle = window.adsbygoogle || []).push({});
+                </script>
+            </div>
+            
+            <div class="container">
+                <h1>Time Zone Converter</h1>
+                <p class="subtitle">Convert time across all global time zones</p>
+        
+        <div class="current-time" id="currentTime"></div>
+        
+        <div class="time-section">
+            <div class="section-title">
+                <span>📍</span> Source Time
+            </div>
+            
+            <div class="time-picker">
+                <div class="time-display" id="timeDisplay" onclick="openTimeModal()">12:00 PM</div>
+                <div class="time-controls">
+                    <button class="time-button" onclick="adjustTime(1)">+ 1 hour</button>
+                    <button class="time-button" onclick="adjustTime(-1)">- 1 hour</button>
+                </div>
+            </div>
+            
+            <div class="quick-times">
+                <div class="quick-time" onclick="setQuickTime('00:00')">Midnight</div>
+                <div class="quick-time" onclick="setQuickTime('06:00')">6:00 AM</div>
+                <div class="quick-time" onclick="setQuickTime('09:00')">9:00 AM</div>
+                <div class="quick-time" onclick="setQuickTime('12:00')">Noon</div>
+                <div class="quick-time" onclick="setQuickTime('15:00')">3:00 PM</div>
+                <div class="quick-time" onclick="setQuickTime('18:00')">6:00 PM</div>
+                <div class="quick-time" onclick="setQuickTime('21:00')">9:00 PM</div>
+                <div class="quick-time" onclick="setCurrentTime()">Now</div>
+            </div>
+            
+            <div class="timezone-selector">
+                <input type="text" class="timezone-search" id="fromSearch" placeholder="Search country or time zone..." onkeyup="filterTimezones('fromTimezone', this.value)">
+                <select id="fromTimezone">
+                    <optgroup label="UTC">
+                        <option value="UTC">UTC - Coordinated Universal Time</option>
+                    </optgroup>
+                    <optgroup label="North America">
+                        <option value="America/Antigua">AST - Antigua and Barbuda</option>
+                        <option value="America/Nassau">EST/EDT - Bahamas</option>
+                        <option value="America/Barbados">AST - Barbados</option>
+                        <option value="America/Belize">CST - Belize</option>
+                        <option value="Atlantic/Bermuda">AST/ADT - Bermuda</option>
+                        <option value="America/Toronto">EST/EDT - Canada (Eastern)</option>
+                        <option value="America/Winnipeg">CST/CDT - Canada (Central)</option>
+                        <option value="America/Edmonton">MST/MDT - Canada (Mountain)</option>
+                        <option value="America/Vancouver">PST/PDT - Canada (Pacific)</option>
+                        <option value="America/Halifax">AST/ADT - Canada (Atlantic)</option>
+                        <option value="America/St_Johns">NST/NDT - Canada (Newfoundland)</option>
+                        <option value="America/Costa_Rica">CST - Costa Rica</option>
+                        <option value="America/Havana">CST/CDT - Cuba</option>
+                        <option value="America/Dominica">AST - Dominica</option>
+                        <option value="America/Santo_Domingo">AST - Dominican Republic</option>
+                        <option value="America/El_Salvador">CST - El Salvador</option>
+                        <option value="America/Grenada">AST - Grenada</option>
+                        <option value="America/Guatemala">CST - Guatemala</option>
+                        <option value="America/Port-au-Prince">EST/EDT - Haiti</option>
+                        <option value="America/Tegucigalpa">CST - Honduras</option>
+                        <option value="America/Jamaica">EST - Jamaica</option>
+                        <option value="America/Mexico_City">CST/CDT - Mexico (Central)</option>
+                        <option value="America/Cancun">EST - Mexico (Eastern)</option>
+                        <option value="America/Chihuahua">MST/MDT - Mexico (Mountain)</option>
+                        <option value="America/Tijuana">PST/PDT - Mexico (Pacific)</option>
+                        <option value="America/Managua">CST - Nicaragua</option>
+                        <option value="America/Panama">EST - Panama</option>
+                        <option value="America/St_Kitts">AST - Saint Kitts and Nevis</option>
+                        <option value="America/St_Lucia">AST - Saint Lucia</option>
+                        <option value="America/St_Vincent">AST - Saint Vincent and the Grenadines</option>
+                        <option value="America/Port_of_Spain">AST - Trinidad and Tobago</option>
+                        <option value="America/New_York">EST/EDT - United States (Eastern)</option>
+                        <option value="America/Chicago">CST/CDT - United States (Central)</option>
+                        <option value="America/Denver">MST/MDT - United States (Mountain)</option>
+                        <option value="America/Phoenix">MST - United States (Arizona)</option>
+                        <option value="America/Los_Angeles">PST/PDT - United States (Pacific)</option>
+                        <option value="America/Anchorage">AKST/AKDT - United States (Alaska)</option>
+                        <option value="Pacific/Honolulu">HST - United States (Hawaii)</option>
+                    </optgroup>
+                    <optgroup label="South America">
+                        <option value="America/Buenos_Aires">ART - Argentina</option>
+                        <option value="America/La_Paz">BOT - Bolivia</option>
+                        <option value="America/Sao_Paulo">BRT/BRST - Brazil (Brasília)</option>
+                        <option value="America/Manaus">AMT - Brazil (Amazon)</option>
+                        <option value="America/Noronha">FNT - Brazil (Fernando de Noronha)</option>
+                        <option value="America/Santiago">CLT/CLST - Chile</option>
+                        <option value="Pacific/Easter">EAST/EASST - Chile (Easter Island)</option>
+                        <option value="America/Bogota">COT - Colombia</option>
+                        <option value="America/Guayaquil">ECT - Ecuador</option>
+                        <option value="Pacific/Galapagos">GALT - Ecuador (Galápagos)</option>
+                        <option value="America/Cayenne">GFT - French Guiana</option>
+                        <option value="America/Georgetown">GYT - Guyana</option>
+                        <option value="America/Asuncion">PYT/PYST - Paraguay</option>
+                        <option value="America/Lima">PET - Peru</option>
+                        <option value="America/Paramaribo">SRT - Suriname</option>
+                        <option value="America/Montevideo">UYT/UYST - Uruguay</option>
+                        <option value="America/Caracas">VET - Venezuela</option>
+                    </optgroup>
+                    <optgroup label="Europe">
+                        <option value="Europe/Tirane">CET/CEST - Albania</option>
+                        <option value="Europe/Andorra">CET/CEST - Andorra</option>
+                        <option value="Europe/Vienna">CET/CEST - Austria</option>
+                        <option value="Europe/Minsk">MSK - Belarus</option>
+                        <option value="Europe/Brussels">CET/CEST - Belgium</option>
+                        <option value="Europe/Sarajevo">CET/CEST - Bosnia and Herzegovina</option>
+                        <option value="Europe/Sofia">EET/EEST - Bulgaria</option>
+                        <option value="Europe/Zagreb">CET/CEST - Croatia</option>
+                        <option value="Asia/Nicosia">EET/EEST - Cyprus</option>
+                        <option value="Europe/Prague">CET/CEST - Czech Republic</option>
+                        <option value="Europe/Copenhagen">CET/CEST - Denmark</option>
+                        <option value="Europe/Tallinn">EET/EEST - Estonia</option>
+                        <option value="Europe/Helsinki">EET/EEST - Finland</option>
+                        <option value="Europe/Paris">CET/CEST - France</option>
+                        <option value="Europe/Berlin">CET/CEST - Germany</option>
+                        <option value="Europe/Athens">EET/EEST - Greece</option>
+                        <option value="Europe/Budapest">CET/CEST - Hungary</option>
+                        <option value="Atlantic/Reykjavik">GMT - Iceland</option>
+                        <option value="Europe/Dublin">GMT/IST - Ireland</option>
+                        <option value="Europe/Rome">CET/CEST - Italy</option>
+                        <option value="Europe/Riga">EET/EEST - Latvia</option>
+                        <option value="Europe/Vaduz">CET/CEST - Liechtenstein</option>
+                        <option value="Europe/Vilnius">EET/EEST - Lithuania</option>
+                        <option value="Europe/Luxembourg">CET/CEST - Luxembourg</option>
+                        <option value="Europe/Malta">CET/CEST - Malta</option>
+                        <option value="Europe/Chisinau">EET/EEST - Moldova</option>
+                        <option value="Europe/Monaco">CET/CEST - Monaco</option>
+                        <option value="Europe/Podgorica">CET/CEST - Montenegro</option>
+                        <option value="Europe/Amsterdam">CET/CEST - Netherlands</option>
+                        <option value="Europe/Skopje">CET/CEST - North Macedonia</option>
+                        <option value="Europe/Oslo">CET/CEST - Norway</option>
+                        <option value="Europe/Warsaw">CET/CEST - Poland</option>
+                        <option value="Europe/Lisbon">WET/WEST - Portugal</option>
+                        <option value="Europe/Bucharest">EET/EEST - Romania</option>
+                        <option value="Europe/Moscow">MSK - Russia (Moscow)</option>
+                        <option value="Europe/Kaliningrad">EET - Russia (Kaliningrad)</option>
+                        <option value="Europe/Samara">SAMT - Russia (Samara)</option>
+                        <option value="Asia/Yekaterinburg">YEKT - Russia (Yekaterinburg)</option>
+                        <option value="Asia/Novosibirsk">NOVT - Russia (Novosibirsk)</option>
+                        <option value="Asia/Krasnoyarsk">KRAT - Russia (Krasnoyarsk)</option>
+                        <option value="Asia/Irkutsk">IRKT - Russia (Irkutsk)</option>
+                        <option value="Asia/Vladivostok">VLAT - Russia (Vladivostok)</option>
+                        <option value="Europe/San_Marino">CET/CEST - San Marino</option>
+                        <option value="Europe/Belgrade">CET/CEST - Serbia</option>
+                        <option value="Europe/Bratislava">CET/CEST - Slovakia</option>
+                        <option value="Europe/Ljubljana">CET/CEST - Slovenia</option>
+                        <option value="Europe/Madrid">CET/CEST - Spain</option>
+                        <option value="Atlantic/Canary">WET/WEST - Spain (Canary Islands)</option>
+                        <option value="Europe/Stockholm">CET/CEST - Sweden</option>
+                        <option value="Europe/Zurich">CET/CEST - Switzerland</option>
+                        <option value="Europe/Istanbul">TRT - Turkey</option>
+                        <option value="Europe/Kiev">EET/EEST - Ukraine</option>
+                        <option value="Europe/London">GMT/BST - United Kingdom</option>
+                        <option value="Europe/Vatican">CET/CEST - Vatican City</option>
+                    </optgroup>
+                    <optgroup label="Africa">
+                        <option value="Africa/Algiers">CET - Algeria</option>
+                        <option value="Africa/Luanda">WAT - Angola</option>
+                        <option value="Africa/Porto-Novo">WAT - Benin</option>
+                        <option value="Africa/Gaborone">CAT - Botswana</option>
+                        <option value="Africa/Ouagadougou">GMT - Burkina Faso</option>
+                        <option value="Africa/Bujumbura">CAT - Burundi</option>
+                        <option value="Africa/Douala">WAT - Cameroon</option>
+                        <option value="Atlantic/Cape_Verde">CVT - Cape Verde</option>
+                        <option value="Africa/Bangui">WAT - Central African Republic</option>
+                        <option value="Africa/Ndjamena">WAT - Chad</option>
+                        <option value="Indian/Comoro">EAT - Comoros</option>
+                        <option value="Africa/Brazzaville">WAT - Congo</option>
+                        <option value="Africa/Kinshasa">WAT - Democratic Republic of the Congo</option>
+                        <option value="Africa/Djibouti">EAT - Djibouti</option>
+                        <option value="Africa/Cairo">EET - Egypt</option>
+                        <option value="Africa/Malabo">WAT - Equatorial Guinea</option>
+                        <option value="Africa/Asmara">EAT - Eritrea</option>
+                        <option value="Africa/Mbabane">SAST - Eswatini</option>
+                        <option value="Africa/Addis_Ababa">EAT - Ethiopia</option>
+                        <option value="Africa/Libreville">WAT - Gabon</option>
+                        <option value="Africa/Banjul">GMT - Gambia</option>
+                        <option value="Africa/Accra">GMT - Ghana</option>
+                        <option value="Africa/Conakry">GMT - Guinea</option>
+                        <option value="Africa/Bissau">GMT - Guinea-Bissau</option>
+                        <option value="Africa/Abidjan">GMT - Ivory Coast</option>
+                        <option value="Africa/Nairobi">EAT - Kenya</option>
+                        <option value="Africa/Maseru">SAST - Lesotho</option>
+                        <option value="Africa/Monrovia">GMT - Liberia</option>
+                        <option value="Africa/Tripoli">EET - Libya</option>
+                        <option value="Indian/Antananarivo">EAT - Madagascar</option>
+                        <option value="Africa/Blantyre">CAT - Malawi</option>
+                        <option value="Africa/Bamako">GMT - Mali</option>
+                        <option value="Africa/Nouakchott">GMT - Mauritania</option>
+                        <option value="Indian/Mauritius">MUT - Mauritius</option>
+                        <option value="Africa/Casablanca">WET/WEST - Morocco</option>
+                        <option value="Africa/Maputo">CAT - Mozambique</option>
+                        <option value="Africa/Windhoek">CAT - Namibia</option>
+                        <option value="Africa/Niamey">WAT - Niger</option>
+                        <option value="Africa/Lagos">WAT - Nigeria</option>
+                        <option value="Africa/Kigali">CAT - Rwanda</option>
+                        <option value="Africa/Sao_Tome">GMT - São Tomé and Príncipe</option>
+                        <option value="Africa/Dakar">GMT - Senegal</option>
+                        <option value="Indian/Mahe">SCT - Seychelles</option>
+                        <option value="Africa/Freetown">GMT - Sierra Leone</option>
+                        <option value="Africa/Mogadishu">EAT - Somalia</option>
+                        <option value="Africa/Johannesburg">SAST - South Africa</option>
+                        <option value="Africa/Juba">EAT - South Sudan</option>
+                        <option value="Africa/Khartoum">CAT - Sudan</option>
+                        <option value="Africa/Dar_es_Salaam">EAT - Tanzania</option>
+                        <option value="Africa/Lome">GMT - Togo</option>
+                        <option value="Africa/Tunis">CET - Tunisia</option>
+                        <option value="Africa/Kampala">EAT - Uganda</option>
+                        <option value="Africa/Lusaka">CAT - Zambia</option>
+                        <option value="Africa/Harare">CAT - Zimbabwe</option>
+                    </optgroup>
+                    <optgroup label="Asia">
+                        <option value="Asia/Kabul">AFT - Afghanistan</option>
+                        <option value="Asia/Yerevan">AMT - Armenia</option>
+                        <option value="Asia/Baku">AZT - Azerbaijan</option>
+                        <option value="Asia/Manama">AST - Bahrain</option>
+                        <option value="Asia/Dhaka">BST - Bangladesh</option>
+                        <option value="Asia/Thimphu">BTT - Bhutan</option>
+                        <option value="Asia/Brunei">BNT - Brunei</option>
+                        <option value="Asia/Phnom_Penh">ICT - Cambodia</option>
+                        <option value="Asia/Shanghai">CST - China</option>
+                        <option value="Asia/Urumqi">XJT - China (Xinjiang)</option>
+                        <option value="Asia/Tbilisi">GET - Georgia</option>
+                        <option value="Asia/Hong_Kong">HKT - Hong Kong</option>
+                        <option value="Asia/Kolkata">IST - India</option>
+                        <option value="Asia/Jakarta">WIB - Indonesia (Western)</option>
+                        <option value="Asia/Makassar">WITA - Indonesia (Central)</option>
+                        <option value="Asia/Jayapura">WIT - Indonesia (Eastern)</option>
+                        <option value="Asia/Tehran">IRST/IRDT - Iran</option>
+                        <option value="Asia/Baghdad">AST - Iraq</option>
+                        <option value="Asia/Jerusalem">IST/IDT - Israel</option>
+                        <option value="Asia/Tokyo">JST - Japan</option>
+                        <option value="Asia/Amman">EET/EEST - Jordan</option>
+                        <option value="Asia/Almaty">ALMT - Kazakhstan (Almaty)</option>
+                        <option value="Asia/Aqtau">AQTT - Kazakhstan (Aqtau)</option>
+                        <option value="Asia/Aqtobe">AQTT - Kazakhstan (Aqtobe)</option>
+                        <option value="Asia/Kuwait">AST - Kuwait</option>
+                        <option value="Asia/Bishkek">KGT - Kyrgyzstan</option>
+                        <option value="Asia/Vientiane">ICT - Laos</option>
+                        <option value="Asia/Beirut">EET/EEST - Lebanon</option>
+                        <option value="Asia/Macau">CST - Macau</option>
+                        <option value="Asia/Kuala_Lumpur">MYT - Malaysia</option>
+                        <option value="Indian/Maldives">MVT - Maldives</option>
+                        <option value="Asia/Ulaanbaatar">ULAT/ULAST - Mongolia</option>
+                        <option value="Asia/Yangon">MMT - Myanmar</option>
+                        <option value="Asia/Kathmandu">NPT - Nepal</option>
+                        <option value="Asia/Pyongyang">KST - North Korea</option>
+                        <option value="Asia/Muscat">GST - Oman</option>
+                        <option value="Asia/Karachi">PKT - Pakistan</option>
+                        <option value="Asia/Gaza">EET/EEST - Palestine</option>
+                        <option value="Asia/Manila">PHT - Philippines</option>
+                        <option value="Asia/Qatar">AST - Qatar</option>
+                        <option value="Asia/Riyadh">AST - Saudi Arabia</option>
+                        <option value="Asia/Singapore" selected>SGT - Singapore</option>
+                        <option value="Asia/Seoul">KST - South Korea</option>
+                        <option value="Asia/Colombo">IST - Sri Lanka</option>
+                        <option value="Asia/Damascus">EET/EEST - Syria</option>
+                        <option value="Asia/Taipei">CST - Taiwan</option>
+                        <option value="Asia/Dushanbe">TJT - Tajikistan</option>
+                        <option value="Asia/Bangkok">ICT - Thailand</option>
+                        <option value="Asia/Dili">TLT - Timor-Leste</option>
+                        <option value="Asia/Ashgabat">TMT - Turkmenistan</option>
+                        <option value="Asia/Dubai">GST - United Arab Emirates</option>
+                        <option value="Asia/Tashkent">UZT - Uzbekistan</option>
+                        <option value="Asia/Ho_Chi_Minh">ICT - Vietnam</option>
+                        <option value="Asia/Aden">AST - Yemen</option>
+                    </optgroup>
+                    <optgroup label="Oceania">
+                        <option value="Pacific/Pago_Pago">SST - American Samoa</option>
+                        <option value="Australia/Sydney">AEST/AEDT - Australia (Sydney)</option>
+                        <option value="Australia/Melbourne">AEST/AEDT - Australia (Melbourne)</option>
+                        <option value="Australia/Brisbane">AEST - Australia (Brisbane)</option>
+                        <option value="Australia/Adelaide">ACST/ACDT - Australia (Adelaide)</option>
+                        <option value="Australia/Perth">AWST - Australia (Perth)</option>
+                        <option value="Australia/Darwin">ACST - Australia (Darwin)</option>
+                        <option value="Australia/Hobart">AEST/AEDT - Australia (Tasmania)</option>
+                        <option value="Pacific/Rarotonga">CKT - Cook Islands</option>
+                        <option value="Pacific/Fiji">FJT/FJST - Fiji</option>
+                        <option value="Pacific/Tahiti">TAHT - French Polynesia</option>
+                        <option value="Pacific/Guam">ChST - Guam</option>
+                        <option value="Pacific/Tarawa">GILT - Kiribati</option>
+                        <option value="Pacific/Majuro">MHT - Marshall Islands</option>
+                        <option value="Pacific/Chuuk">CHUT - Micronesia</option>
+                        <option value="Pacific/Nauru">NRT - Nauru</option>
+                        <option value="Pacific/Auckland">NZST/NZDT - New Zealand</option>
+                        <option value="Pacific/Chatham">CHAST/CHADT - New Zealand (Chatham)</option>
+                        <option value="Pacific/Niue">NUT - Niue</option>
+                        <option value="Pacific/Norfolk">NFT - Norfolk Island</option>
+                        <option value="Pacific/Saipan">ChST - Northern Mariana Islands</option>
+                        <option value="Pacific/Palau">PWT - Palau</option>
+                        <option value="Pacific/Port_Moresby">PGT - Papua New Guinea</option>
+                        <option value="Pacific/Pitcairn">PST - Pitcairn Islands</option>
+                        <option value="Pacific/Apia">WST/WSDT - Samoa</option>
+                        <option value="Pacific/Guadalcanal">SBT - Solomon Islands</option>
+                        <option value="Pacific/Fakaofo">TKT - Tokelau</option>
+                        <option value="Pacific/Tongatapu">TOT - Tonga</option>
+                        <option value="Pacific/Funafuti">TVT - Tuvalu</option>
+                        <option value="Pacific/Efate">VUT - Vanuatu</option>
+                        <option value="Pacific/Wallis">WFT - Wallis and Futuna</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+        
+        <div class="time-section">
+            <div class="section-title">
+                <span>🎯</span> Target Time Zone
+            </div>
+            <div class="timezone-selector">
+                <input type="text" class="timezone-search" id="toSearch" placeholder="Search country or time zone..." onkeyup="filterTimezones('toTimezone', this.value)">
+                <select id="toTimezone">
+                    <optgroup label="UTC">
+                        <option value="UTC">UTC - Coordinated Universal Time</option>
+                    </optgroup>
+                    <optgroup label="North America">
+                        <option value="America/Antigua">AST - Antigua and Barbuda</option>
+                        <option value="America/Nassau">EST/EDT - Bahamas</option>
+                        <option value="America/Barbados">AST - Barbados</option>
+                        <option value="America/Belize">CST - Belize</option>
+                        <option value="Atlantic/Bermuda">AST/ADT - Bermuda</option>
+                        <option value="America/Toronto">EST/EDT - Canada (Eastern)</option>
+                        <option value="America/Winnipeg">CST/CDT - Canada (Central)</option>
+                        <option value="America/Edmonton">MST/MDT - Canada (Mountain)</option>
+                        <option value="America/Vancouver">PST/PDT - Canada (Pacific)</option>
+                        <option value="America/Halifax">AST/ADT - Canada (Atlantic)</option>
+                        <option value="America/St_Johns">NST/NDT - Canada (Newfoundland)</option>
+                        <option value="America/Costa_Rica">CST - Costa Rica</option>
+                        <option value="America/Havana">CST/CDT - Cuba</option>
+                        <option value="America/Dominica">AST - Dominica</option>
+                        <option value="America/Santo_Domingo">AST - Dominican Republic</option>
+                        <option value="America/El_Salvador">CST - El Salvador</option>
+                        <option value="America/Grenada">AST - Grenada</option>
+                        <option value="America/Guatemala">CST - Guatemala</option>
+                        <option value="America/Port-au-Prince">EST/EDT - Haiti</option>
+                        <option value="America/Tegucigalpa">CST - Honduras</option>
+                        <option value="America/Jamaica">EST - Jamaica</option>
+                        <option value="America/Mexico_City">CST/CDT - Mexico (Central)</option>
+                        <option value="America/Cancun">EST - Mexico (Eastern)</option>
+                        <option value="America/Chihuahua">MST/MDT - Mexico (Mountain)</option>
+                        <option value="America/Tijuana">PST/PDT - Mexico (Pacific)</option>
+                        <option value="America/Managua">CST - Nicaragua</option>
+                        <option value="America/Panama">EST - Panama</option>
+                        <option value="America/St_Kitts">AST - Saint Kitts and Nevis</option>
+                        <option value="America/St_Lucia">AST - Saint Lucia</option>
+                        <option value="America/St_Vincent">AST - Saint Vincent and the Grenadines</option>
+                        <option value="America/Port_of_Spain">AST - Trinidad and Tobago</option>
+                        <option value="America/New_York" selected>EST/EDT - United States (Eastern)</option>
+                        <option value="America/Chicago">CST/CDT - United States (Central)</option>
+                        <option value="America/Denver">MST/MDT - United States (Mountain)</option>
+                        <option value="America/Phoenix">MST - United States (Arizona)</option>
+                        <option value="America/Los_Angeles">PST/PDT - United States (Pacific)</option>
+                        <option value="America/Anchorage">AKST/AKDT - United States (Alaska)</option>
+                        <option value="Pacific/Honolulu">HST - United States (Hawaii)</option>
+                    </optgroup>
+                    <optgroup label="South America">
+                        <option value="America/Buenos_Aires">ART - Argentina</option>
+                        <option value="America/La_Paz">BOT - Bolivia</option>
+                        <option value="America/Sao_Paulo">BRT/BRST - Brazil (Brasília)</option>
+                        <option value="America/Manaus">AMT - Brazil (Amazon)</option>
+                        <option value="America/Noronha">FNT - Brazil (Fernando de Noronha)</option>
+                        <option value="America/Santiago">CLT/CLST - Chile</option>
+                        <option value="Pacific/Easter">EAST/EASST - Chile (Easter Island)</option>
+                        <option value="America/Bogota">COT - Colombia</option>
+                        <option value="America/Guayaquil">ECT - Ecuador</option>
+                        <option value="Pacific/Galapagos">GALT - Ecuador (Galápagos)</option>
+                        <option value="America/Cayenne">GFT - French Guiana</option>
+                        <option value="America/Georgetown">GYT - Guyana</option>
+                        <option value="America/Asuncion">PYT/PYST - Paraguay</option>
+                        <option value="America/Lima">PET - Peru</option>
+                        <option value="America/Paramaribo">SRT - Suriname</option>
+                        <option value="America/Montevideo">UYT/UYST - Uruguay</option>
+                        <option value="America/Caracas">VET - Venezuela</option>
+                    </optgroup>
+                    <optgroup label="Europe">
+                        <option value="Europe/Tirane">CET/CEST - Albania</option>
+                        <option value="Europe/Andorra">CET/CEST - Andorra</option>
+                        <option value="Europe/Vienna">CET/CEST - Austria</option>
+                        <option value="Europe/Minsk">MSK - Belarus</option>
+                        <option value="Europe/Brussels">CET/CEST - Belgium</option>
+                        <option value="Europe/Sarajevo">CET/CEST - Bosnia and Herzegovina</option>
+                        <option value="Europe/Sofia">EET/EEST - Bulgaria</option>
+                        <option value="Europe/Zagreb">CET/CEST - Croatia</option>
+                        <option value="Asia/Nicosia">EET/EEST - Cyprus</option>
+                        <option value="Europe/Prague">CET/CEST - Czech Republic</option>
+                        <option value="Europe/Copenhagen">CET/CEST - Denmark</option>
+                        <option value="Europe/Tallinn">EET/EEST - Estonia</option>
+                        <option value="Europe/Helsinki">EET/EEST - Finland</option>
+                        <option value="Europe/Paris">CET/CEST - France</option>
+                        <option value="Europe/Berlin">CET/CEST - Germany</option>
+                        <option value="Europe/Athens">EET/EEST - Greece</option>
+                        <option value="Europe/Budapest">CET/CEST - Hungary</option>
+                        <option value="Atlantic/Reykjavik">GMT - Iceland</option>
+                        <option value="Europe/Dublin">GMT/IST - Ireland</option>
+                        <option value="Europe/Rome">CET/CEST - Italy</option>
+                        <option value="Europe/Riga">EET/EEST - Latvia</option>
+                        <option value="Europe/Vaduz">CET/CEST - Liechtenstein</option>
+                        <option value="Europe/Vilnius">EET/EEST - Lithuania</option>
+                        <option value="Europe/Luxembourg">CET/CEST - Luxembourg</option>
+                        <option value="Europe/Malta">CET/CEST - Malta</option>
+                        <option value="Europe/Chisinau">EET/EEST - Moldova</option>
+                        <option value="Europe/Monaco">CET/CEST - Monaco</option>
+                        <option value="Europe/Podgorica">CET/CEST - Montenegro</option>
+                        <option value="Europe/Amsterdam">CET/CEST - Netherlands</option>
+                        <option value="Europe/Skopje">CET/CEST - North Macedonia</option>
+                        <option value="Europe/Oslo">CET/CEST - Norway</option>
+                        <option value="Europe/Warsaw">CET/CEST - Poland</option>
+                        <option value="Europe/Lisbon">WET/WEST - Portugal</option>
+                        <option value="Europe/Bucharest">EET/EEST - Romania</option>
+                        <option value="Europe/Moscow">MSK - Russia (Moscow)</option>
+                        <option value="Europe/Kaliningrad">EET - Russia (Kaliningrad)</option>
+                        <option value="Europe/Samara">SAMT - Russia (Samara)</option>
+                        <option value="Asia/Yekaterinburg">YEKT - Russia (Yekaterinburg)</option>
+                        <option value="Asia/Novosibirsk">NOVT - Russia (Novosibirsk)</option>
+                        <option value="Asia/Krasnoyarsk">KRAT - Russia (Krasnoyarsk)</option>
+                        <option value="Asia/Irkutsk">IRKT - Russia (Irkutsk)</option>
+                        <option value="Asia/Vladivostok">VLAT - Russia (Vladivostok)</option>
+                        <option value="Europe/San_Marino">CET/CEST - San Marino</option>
+                        <option value="Europe/Belgrade">CET/CEST - Serbia</option>
+                        <option value="Europe/Bratislava">CET/CEST - Slovakia</option>
+                        <option value="Europe/Ljubljana">CET/CEST - Slovenia</option>
+                        <option value="Europe/Madrid">CET/CEST - Spain</option>
+                        <option value="Atlantic/Canary">WET/WEST - Spain (Canary Islands)</option>
+                        <option value="Europe/Stockholm">CET/CEST - Sweden</option>
+                        <option value="Europe/Zurich">CET/CEST - Switzerland</option>
+                        <option value="Europe/Istanbul">TRT - Turkey</option>
+                        <option value="Europe/Kiev">EET/EEST - Ukraine</option>
+                        <option value="Europe/London">GMT/BST - United Kingdom</option>
+                        <option value="Europe/Vatican">CET/CEST - Vatican City</option>
+                    </optgroup>
+                    <optgroup label="Africa">
+                        <option value="Africa/Algiers">CET - Algeria</option>
+                        <option value="Africa/Luanda">WAT - Angola</option>
+                        <option value="Africa/Porto-Novo">WAT - Benin</option>
+                        <option value="Africa/Gaborone">CAT - Botswana</option>
+                        <option value="Africa/Ouagadougou">GMT - Burkina Faso</option>
+                        <option value="Africa/Bujumbura">CAT - Burundi</option>
+                        <option value="Africa/Douala">WAT - Cameroon</option>
+                        <option value="Atlantic/Cape_Verde">CVT - Cape Verde</option>
+                        <option value="Africa/Bangui">WAT - Central African Republic</option>
+                        <option value="Africa/Ndjamena">WAT - Chad</option>
+                        <option value="Indian/Comoro">EAT - Comoros</option>
+                        <option value="Africa/Brazzaville">WAT - Congo</option>
+                        <option value="Africa/Kinshasa">WAT - Democratic Republic of the Congo</option>
+                        <option value="Africa/Djibouti">EAT - Djibouti</option>
+                        <option value="Africa/Cairo">EET - Egypt</option>
+                        <option value="Africa/Malabo">WAT - Equatorial Guinea</option>
+                        <option value="Africa/Asmara">EAT - Eritrea</option>
+                        <option value="Africa/Mbabane">SAST - Eswatini</option>
+                        <option value="Africa/Addis_Ababa">EAT - Ethiopia</option>
+                        <option value="Africa/Libreville">WAT - Gabon</option>
+                        <option value="Africa/Banjul">GMT - Gambia</option>
+                        <option value="Africa/Accra">GMT - Ghana</option>
+                        <option value="Africa/Conakry">GMT - Guinea</option>
+                        <option value="Africa/Bissau">GMT - Guinea-Bissau</option>
+                        <option value="Africa/Abidjan">GMT - Ivory Coast</option>
+                        <option value="Africa/Nairobi">EAT - Kenya</option>
+                        <option value="Africa/Maseru">SAST - Lesotho</option>
+                        <option value="Africa/Monrovia">GMT - Liberia</option>
+                        <option value="Africa/Tripoli">EET - Libya</option>
+                        <option value="Indian/Antananarivo">EAT - Madagascar</option>
+                        <option value="Africa/Blantyre">CAT - Malawi</option>
+                        <option value="Africa/Bamako">GMT - Mali</option>
+                        <option value="Africa/Nouakchott">GMT - Mauritania</option>
+                        <option value="Indian/Mauritius">MUT - Mauritius</option>
+                        <option value="Africa/Casablanca">WET/WEST - Morocco</option>
+                        <option value="Africa/Maputo">CAT - Mozambique</option>
+                        <option value="Africa/Windhoek">CAT - Namibia</option>
+                        <option value="Africa/Niamey">WAT - Niger</option>
+                        <option value="Africa/Lagos">WAT - Nigeria</option>
+                        <option value="Africa/Kigali">CAT - Rwanda</option>
+                        <option value="Africa/Sao_Tome">GMT - São Tomé and Príncipe</option>
+                        <option value="Africa/Dakar">GMT - Senegal</option>
+                        <option value="Indian/Mahe">SCT - Seychelles</option>
+                        <option value="Africa/Freetown">GMT - Sierra Leone</option>
+                        <option value="Africa/Mogadishu">EAT - Somalia</option>
+                        <option value="Africa/Johannesburg">SAST - South Africa</option>
+                        <option value="Africa/Juba">EAT - South Sudan</option>
+                        <option value="Africa/Khartoum">CAT - Sudan</option>
+                        <option value="Africa/Dar_es_Salaam">EAT - Tanzania</option>
+                        <option value="Africa/Lome">GMT - Togo</option>
+                        <option value="Africa/Tunis">CET - Tunisia</option>
+                        <option value="Africa/Kampala">EAT - Uganda</option>
+                        <option value="Africa/Lusaka">CAT - Zambia</option>
+                        <option value="Africa/Harare">CAT - Zimbabwe</option>
+                    </optgroup>
+                    <optgroup label="Asia">
+                        <option value="Asia/Kabul">AFT - Afghanistan</option>
+                        <option value="Asia/Yerevan">AMT - Armenia</option>
+                        <option value="Asia/Baku">AZT - Azerbaijan</option>
+                        <option value="Asia/Manama">AST - Bahrain</option>
+                        <option value="Asia/Dhaka">BST - Bangladesh</option>
+                        <option value="Asia/Thimphu">BTT - Bhutan</option>
+                        <option value="Asia/Brunei">BNT - Brunei</option>
+                        <option value="Asia/Phnom_Penh">ICT - Cambodia</option>
+                        <option value="Asia/Shanghai">CST - China</option>
+                        <option value="Asia/Urumqi">XJT - China (Xinjiang)</option>
+                        <option value="Asia/Tbilisi">GET - Georgia</option>
+                        <option value="Asia/Hong_Kong">HKT - Hong Kong</option>
+                        <option value="Asia/Kolkata">IST - India</option>
+                        <option value="Asia/Jakarta">WIB - Indonesia (Western)</option>
+                        <option value="Asia/Makassar">WITA - Indonesia (Central)</option>
+                        <option value="Asia/Jayapura">WIT - Indonesia (Eastern)</option>
+                        <option value="Asia/Tehran">IRST/IRDT - Iran</option>
+                        <option value="Asia/Baghdad">AST - Iraq</option>
+                        <option value="Asia/Jerusalem">IST/IDT - Israel</option>
+                        <option value="Asia/Tokyo">JST - Japan</option>
+                        <option value="Asia/Amman">EET/EEST - Jordan</option>
+                        <option value="Asia/Almaty">ALMT - Kazakhstan (Almaty)</option>
+                        <option value="Asia/Aqtau">AQTT - Kazakhstan (Aqtau)</option>
+                        <option value="Asia/Aqtobe">AQTT - Kazakhstan (Aqtobe)</option>
+                        <option value="Asia/Kuwait">AST - Kuwait</option>
+                        <option value="Asia/Bishkek">KGT - Kyrgyzstan</option>
+                        <option value="Asia/Vientiane">ICT - Laos</option>
+                        <option value="Asia/Beirut">EET/EEST - Lebanon</option>
+                        <option value="Asia/Macau">CST - Macau</option>
+                        <option value="Asia/Kuala_Lumpur">MYT - Malaysia</option>
+                        <option value="Indian/Maldives">MVT - Maldives</option>
+                        <option value="Asia/Ulaanbaatar">ULAT/ULAST - Mongolia</option>
+                        <option value="Asia/Yangon">MMT - Myanmar</option>
+                        <option value="Asia/Kathmandu">NPT - Nepal</option>
+                        <option value="Asia/Seoul">KST - North Korea</option>
+                        <option value="Asia/Muscat">GST - Oman</option>
+                        <option value="Asia/Karachi">PKT - Pakistan</option>
+                        <option value="Asia/Gaza">EET/EEST - Palestine</option>
+                        <option value="Asia/Manila">PHT - Philippines</option>
+                        <option value="Asia/Qatar">AST - Qatar</option>
+                        <option value="Asia/Riyadh">AST - Saudi Arabia</option>
+                        <option value="Asia/Singapore">SGT - Singapore</option>
+                        <option value="Asia/Seoul">KST - South Korea</option>
+                        <option value="Asia/Colombo">IST - Sri Lanka</option>
+                        <option value="Asia/Damascus">EET/EEST - Syria</option>
+                        <option value="Asia/Taipei">CST - Taiwan</option>
+                        <option value="Asia/Dushanbe">TJT - Tajikistan</option>
+                        <option value="Asia/Bangkok">ICT - Thailand</option>
+                        <option value="Asia/Dili">TLT - Timor-Leste</option>
+                        <option value="Asia/Ashgabat">TMT - Turkmenistan</option>
+                        <option value="Asia/Dubai">GST - United Arab Emirates</option>
+                        <option value="Asia/Tashkent">UZT - Uzbekistan</option>
+                        <option value="Asia/Ho_Chi_Minh">ICT - Vietnam</option>
+                        <option value="Asia/Aden">AST - Yemen</option>
+                    </optgroup>
+                    <optgroup label="Oceania">
+                        <option value="Pacific/Pago_Pago">SST - American Samoa</option>
+                        <option value="Australia/Sydney">AEST/AEDT - Australia (Sydney)</option>
+                        <option value="Australia/Melbourne">AEST/AEDT - Australia (Melbourne)</option>
+                        <option value="Australia/Brisbane">AEST - Australia (Brisbane)</option>
+                        <option value="Australia/Adelaide">ACST/ACDT - Australia (Adelaide)</option>
+                        <option value="Australia/Perth">AWST - Australia (Perth)</option>
+                        <option value="Australia/Darwin">ACST - Australia (Darwin)</option>
+                        <option value="Australia/Hobart">AEST/AEDT - Australia (Tasmania)</option>
+                        <option value="Pacific/Rarotonga">CKT - Cook Islands</option>
+                        <option value="Pacific/Fiji">FJT/FJST - Fiji</option>
+                        <option value="Pacific/Tahiti">TAHT - French Polynesia</option>
+                        <option value="Pacific/Guam">ChST - Guam</option>
+                        <option value="Pacific/Tarawa">GILT - Kiribati</option>
+                        <option value="Pacific/Majuro">MHT - Marshall Islands</option>
+                        <option value="Pacific/Chuuk">CHUT - Micronesia</option>
+                        <option value="Pacific/Nauru">NRT - Nauru</option>
+                        <option value="Pacific/Auckland">NZST/NZDT - New Zealand</option>
+                        <option value="Pacific/Chatham">CHAST/CHADT - New Zealand (Chatham)</option>
+                        <option value="Pacific/Niue">NUT - Niue</option>
+                        <option value="Pacific/Norfolk">NFT - Norfolk Island</option>
+                        <option value="Pacific/Saipan">ChST - Northern Mariana Islands</option>
+                        <option value="Pacific/Palau">PWT - Palau</option>
+                        <option value="Pacific/Port_Moresby">PGT - Papua New Guinea</option>
+                        <option value="Pacific/Pitcairn">PST - Pitcairn Islands</option>
+                        <option value="Pacific/Apia">WST/WSDT - Samoa</option>
+                        <option value="Pacific/Guadalcanal">SBT - Solomon Islands</option>
+                        <option value="Pacific/Fakaofo">TKT - Tokelau</option>
+                        <option value="Pacific/Tongatapu">TOT - Tonga</option>
+                        <option value="Pacific/Funafuti">TVT - Tuvalu</option>
+                        <option value="Pacific/Efate">VUT - Vanuatu</option>
+                        <option value="Pacific/Wallis">WFT - Wallis and Futuna</option>
+                    </optgroup>
+                </select>
+            </div>
+        </div>
+        
+        <button class="convert-button" onclick="convertTime()">Convert Time</button>
+        
+        <div class="result-section" id="result">
+            <span class="placeholder">Select time and zones to convert</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Time Input Modal -->
+    <div class="time-modal" id="timeModal">
+        <div class="modal-content">
+            <h3 class="modal-title">Set Time</h3>
+            <div class="time-input-grid">
+                <div class="time-input-item">
+                    <div class="time-input-label">Hour</div>
+                    <input type="number" class="time-input" id="modalHour" min="1" max="12" value="12">
+                </div>
+                <div class="time-input-item">
+                    <div class="time-input-label">Minute</div>
+                    <input type="number" class="time-input" id="modalMinute" min="0" max="59" value="0">
+                </div>
+                <div class="time-input-item">
+                    <div class="time-input-label">Period</div>
+                    <select class="time-input" id="modalPeriod">
+                        <option value="AM">AM</option>
+                        <option value="PM" selected>PM</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-button cancel" onclick="closeTimeModal()">Cancel</button>
+                <button class="modal-button save" onclick="saveModalTime()">Set Time</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentHour = 12;
+        let currentMinute = 0;
+        let currentPeriod = 'PM';
+
+        // Display current time
+        function updateCurrentTime() {
+            const now = new Date();
+            const options = { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: true,
+                timeZoneName: 'short'
+            };
+            document.getElementById('currentTime').textContent = 
+                `Your local time: ${now.toLocaleString('en-US', options)}`;
+        }
+
+        updateCurrentTime();
+        setInterval(updateCurrentTime, 1000);
+
+        // Time display functions
+        function updateTimeDisplay() {
+            const hour = currentHour;
+            const minute = String(currentMinute).padStart(2, '0');
+            document.getElementById('timeDisplay').textContent = `${hour}:${minute} ${currentPeriod}`;
+        }
+
+        function openTimeModal() {
+            document.getElementById('modalHour').value = currentHour;
+            document.getElementById('modalMinute').value = currentMinute;
+            document.getElementById('modalPeriod').value = currentPeriod;
+            document.getElementById('timeModal').classList.add('active');
+        }
+
+        function closeTimeModal() {
+            document.getElementById('timeModal').classList.remove('active');
+        }
+
+        function saveModalTime() {
+            currentHour = parseInt(document.getElementById('modalHour').value);
+            currentMinute = parseInt(document.getElementById('modalMinute').value);
+            currentPeriod = document.getElementById('modalPeriod').value;
+            updateTimeDisplay();
+            closeTimeModal();
+        }
+
+        // Close modal on outside click
+        document.getElementById('timeModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeTimeModal();
+            }
+        });
+
+        function adjustTime(hours) {
+            let totalHours = currentHour;
+            if (currentPeriod === 'PM' && currentHour !== 12) {
+                totalHours += 12;
+            } else if (currentPeriod === 'AM' && currentHour === 12) {
+                totalHours = 0;
+            }
+            
+            totalHours += hours;
+            
+            // Handle day wrapping
+            while (totalHours < 0) totalHours += 24;
+            while (totalHours >= 24) totalHours -= 24;
+            
+            // Convert back to 12-hour format
+            if (totalHours === 0) {
+                currentHour = 12;
+                currentPeriod = 'AM';
+            } else if (totalHours === 12) {
+                currentHour = 12;
+                currentPeriod = 'PM';
+            } else if (totalHours > 12) {
+                currentHour = totalHours - 12;
+                currentPeriod = 'PM';
+            } else {
+                currentHour = totalHours;
+                currentPeriod = 'AM';
+            }
+            
+            updateTimeDisplay();
+        }
+
+        function setQuickTime(time24) {
+            const [hours, minutes] = time24.split(':').map(Number);
+            
+            if (hours === 0) {
+                currentHour = 12;
+                currentPeriod = 'AM';
+            } else if (hours === 12) {
+                currentHour = 12;
+                currentPeriod = 'PM';
+            } else if (hours > 12) {
+                currentHour = hours - 12;
+                currentPeriod = 'PM';
+            } else {
+                currentHour = hours;
+                currentPeriod = 'AM';
+            }
+            
+            currentMinute = minutes;
+            updateTimeDisplay();
+            
+            // Update active state
+            document.querySelectorAll('.quick-time').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function setCurrentTime() {
+            const now = new Date();
+            currentHour = now.getHours();
+            currentMinute = now.getMinutes();
+            
+            if (currentHour === 0) {
+                currentHour = 12;
+                currentPeriod = 'AM';
+            } else if (currentHour === 12) {
+                currentPeriod = 'PM';
+            } else if (currentHour > 12) {
+                currentHour = currentHour - 12;
+                currentPeriod = 'PM';
+            } else {
+                currentPeriod = 'AM';
+            }
+            
+            updateTimeDisplay();
+            
+            // Update active state
+            document.querySelectorAll('.quick-time').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+        }
+
+        function filterTimezones(selectId, searchText) {
+            const select = document.getElementById(selectId);
+            const options = select.getElementsByTagName('option');
+            const optgroups = select.getElementsByTagName('optgroup');
+            
+            searchText = searchText.toLowerCase();
+            
+            // Show/hide options based on search
+            for (let i = 0; i < options.length; i++) {
+                const option = options[i];
+                const text = option.textContent.toLowerCase();
+                const value = option.value.toLowerCase();
+                
+                // Search in both the text content and the value
+                if (text.includes(searchText) || value.includes(searchText)) {
+                    option.style.display = '';
+                } else {
+                    option.style.display = 'none';
+                }
+            }
+            
+            // Hide empty optgroups
+            for (let i = 0; i < optgroups.length; i++) {
+                const optgroup = optgroups[i];
+                const visibleOptions = Array.from(optgroup.getElementsByTagName('option'))
+                    .filter(opt => opt.style.display !== 'none');
+                
+                if (visibleOptions.length === 0) {
+                    optgroup.style.display = 'none';
+                } else {
+                    optgroup.style.display = '';
+                }
+            }
+        }
+
+        function convertTime() {
+            const fromTz = document.getElementById('fromTimezone').value;
+            const toTz = document.getElementById('toTimezone').value;
+            
+            // Convert to 24-hour format
+            let hour24 = currentHour;
+            if (currentPeriod === 'PM' && currentHour !== 12) {
+                hour24 = currentHour + 12;
+            } else if (currentPeriod === 'AM' && currentHour === 12) {
+                hour24 = 0;
+            }
+            
+            // Create date object for today with the specified time
+            const today = new Date();
+            const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            const timeStr = `${String(hour24).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}:00`;
+            
+            // Create date in source timezone
+            const sourceDate = new Date(`${dateStr}T${timeStr}`);
+            
+            // Get timezone names from select options
+            const fromOption = document.querySelector(`#fromTimezone option[value="${fromTz}"]`);
+            const toOption = document.querySelector(`#toTimezone option[value="${toTz}"]`);
+            const fromText = fromOption ? fromOption.textContent : fromTz;
+            const toText = toOption ? toOption.textContent : toTz;
+            
+            // Extract country/location name
+            const fromLocation = fromText.split(' - ')[1] || fromText;
+            const toLocation = toText.split(' - ')[1] || toText;
+            const fromAbbr = fromText.split(' - ')[0] || '';
+            const toAbbr = toText.split(' - ')[0] || '';
+            
+            // Format source and target times
+            const sourceOptions = {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true,
+                timeZone: fromTz,
+                timeZoneName: 'short'
+            };
+            
+            const targetOptions = {
+                hour: 'numeric',
+                minute: '2-digit',
+                hour12: true,
+                timeZone: toTz,
+                timeZoneName: 'short'
+            };
+            
+            const dateOptions = {
+                weekday: 'long',
+                month: 'long',
+                day: 'numeric',
+                year: 'numeric',
+                timeZone: toTz
+            };
+            
+            const sourceTimeStr = sourceDate.toLocaleString('en-US', sourceOptions);
+            const targetTimeStr = sourceDate.toLocaleString('en-US', targetOptions);
+            const targetDateStr = sourceDate.toLocaleString('en-US', dateOptions);
+            
+            // Calculate time difference
+            const sourceOffset = getTimezoneOffset(sourceDate, fromTz);
+            const targetOffset = getTimezoneOffset(sourceDate, toTz);
+            const diffHours = Math.round((targetOffset - sourceOffset) / 60);
+            
+            let diffText = '';
+            if (diffHours !== 0) {
+                const absDiff = Math.abs(diffHours);
+                const sign = diffHours > 0 ? '+' : '-';
+                diffText = `<div class="result-diff">${toLocation} is ${absDiff} hour${absDiff !== 1 ? 's' : ''} ${diffHours > 0 ? 'ahead of' : 'behind'} ${fromLocation}</div>`;
+            }
+            
+            document.getElementById('result').innerHTML = `
+                <div class="result-content">
+                    <div class="result-time">${targetTimeStr}</div>
+                    <div class="result-date">${targetDateStr}</div>
+                    ${diffText}
+                </div>
+            `;
+        }
+        
+        function getTimezoneOffset(date, timezone) {
+            const tzDate = new Date(date.toLocaleString('en-US', { timeZone: timezone }));
+            const utcDate = new Date(date.toLocaleString('en-US', { timeZone: 'UTC' }));
+            return (tzDate - utcDate) / 60000; // Convert to minutes
+        }
+
+        // Validate inputs
+        document.getElementById('modalHour').addEventListener('input', function() {
+            if (this.value > 12) this.value = 12;
+            if (this.value < 1) this.value = 1;
+        });
+
+        document.getElementById('modalMinute').addEventListener('input', function() {
+            if (this.value > 59) this.value = 59;
+            if (this.value < 0) this.value = 0;
+        });
+    </script>
+</body>
+</html>
