@@ -132,6 +132,57 @@
             margin-bottom: 20px;
         }
 
+        .date-picker {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .date-display {
+            font-size: 1.5em;
+            font-weight: 600;
+            color: #203a43;
+            background: white;
+            padding: 12px 20px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+            min-width: 200px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .date-display:hover {
+            transform: scale(1.02);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .date-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .date-button {
+            background: white;
+            border: 2px solid #e0e0e0;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+            font-weight: 600;
+            color: #2c5364;
+        }
+
+        .date-button:hover {
+            background: #2c5364;
+            color: white;
+            border-color: #2c5364;
+            transform: translateX(3px);
+        }
+
         .time-display {
             font-size: 3em;
             font-weight: 700;
@@ -325,7 +376,7 @@
             font-weight: 600;
         }
 
-        .time-modal {
+        .time-modal, .date-modal {
             display: none;
             position: fixed;
             top: 0;
@@ -338,7 +389,7 @@
             justify-content: center;
         }
 
-        .time-modal.active {
+        .time-modal.active, .date-modal.active {
             display: flex;
         }
 
@@ -370,11 +421,15 @@
             font-weight: 700;
         }
 
-        .time-input-grid {
+        .time-input-grid, .date-input-grid {
             display: grid;
             grid-template-columns: 1fr 1fr 1fr;
             gap: 10px;
             margin-bottom: 20px;
+        }
+
+        .date-input-grid {
+            grid-template-columns: 1fr 1fr 1fr 1fr;
         }
 
         .time-input-item {
@@ -451,7 +506,7 @@
                 min-width: 200px;
             }
             
-            .time-picker {
+            .time-picker, .date-picker {
                 flex-direction: column;
             }
             
@@ -510,6 +565,14 @@
         <div class="time-section">
             <div class="section-title">
                 <span>📍</span> Source Time
+            </div>
+            
+            <div class="date-picker">
+                <div class="date-display" id="dateDisplay" onclick="openDateModal()">Today</div>
+                <div class="date-controls">
+                    <button class="date-button" onclick="adjustDate(1)">+ 1 day</button>
+                    <button class="date-button" onclick="adjustDate(-1)">- 1 day</button>
+                </div>
             </div>
             
             <div class="time-picker">
@@ -1111,10 +1174,46 @@
         </div>
     </div>
 
+    <!-- Date Input Modal -->
+    <div class="date-modal" id="dateModal">
+        <div class="modal-content">
+            <h3 class="modal-title">Set Date</h3>
+            <div class="date-input-grid">
+                <div class="time-input-item">
+                    <div class="time-input-label">Month</div>
+                    <input type="number" class="time-input" id="modalMonth" min="1" max="12" value="12">
+                </div>
+                <div class="time-input-item">
+                    <div class="time-input-label">Day</div>
+                    <input type="number" class="time-input" id="modalDay" min="1" max="31" value="25">
+                </div>
+                <div class="time-input-item">
+                    <div class="time-input-label">Year</div>
+                    <input type="number" class="time-input" id="modalYear" min="2020" max="2030" value="2024">
+                </div>
+                <div class="time-input-item">
+                    <div class="time-input-label">Quick</div>
+                    <select class="time-input" id="modalQuickDate">
+                        <option value="today">Today</option>
+                        <option value="tomorrow">Tomorrow</option>
+                        <option value="yesterday">Yesterday</option>
+                        <option value="nextweek">Next Week</option>
+                        <option value="lastweek">Last Week</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="modal-button cancel" onclick="closeDateModal()">Cancel</button>
+                <button class="modal-button save" onclick="saveModalDate()">Set Date</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         let currentHour = 12;
         let currentMinute = 0;
         let currentPeriod = 'PM';
+        let currentDate = new Date();
 
         // Display current time
         function updateCurrentTime() {
@@ -1131,6 +1230,7 @@
         }
 
         updateCurrentTime();
+        updateDateDisplay();
         setInterval(updateCurrentTime, 1000);
 
         // Time display functions
@@ -1138,6 +1238,24 @@
             const hour = currentHour;
             const minute = String(currentMinute).padStart(2, '0');
             document.getElementById('timeDisplay').textContent = `${hour}:${minute} ${currentPeriod}`;
+        }
+
+        function updateDateDisplay() {
+            const today = new Date();
+            const diffTime = currentDate.getTime() - today.getTime();
+            const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+            
+            if (diffDays === 0) {
+                document.getElementById('dateDisplay').textContent = 'Today';
+            } else if (diffDays === 1) {
+                document.getElementById('dateDisplay').textContent = 'Tomorrow';
+            } else if (diffDays === -1) {
+                document.getElementById('dateDisplay').textContent = 'Yesterday';
+            } else if (diffDays > 0) {
+                document.getElementById('dateDisplay').textContent = `In ${diffDays} days`;
+            } else {
+                document.getElementById('dateDisplay').textContent = `${Math.abs(diffDays)} days ago`;
+            }
         }
 
         function openTimeModal() {
@@ -1151,6 +1269,17 @@
             document.getElementById('timeModal').classList.remove('active');
         }
 
+        function openDateModal() {
+            document.getElementById('modalMonth').value = currentDate.getMonth() + 1;
+            document.getElementById('modalDay').value = currentDate.getDate();
+            document.getElementById('modalYear').value = currentDate.getFullYear();
+            document.getElementById('dateModal').classList.add('active');
+        }
+
+        function closeDateModal() {
+            document.getElementById('dateModal').classList.remove('active');
+        }
+
         function saveModalTime() {
             currentHour = parseInt(document.getElementById('modalHour').value);
             currentMinute = parseInt(document.getElementById('modalMinute').value);
@@ -1159,10 +1288,31 @@
             closeTimeModal();
         }
 
+        function saveModalDate() {
+            const month = parseInt(document.getElementById('modalMonth').value) - 1;
+            const day = parseInt(document.getElementById('modalDay').value);
+            const year = parseInt(document.getElementById('modalYear').value);
+            
+            currentDate = new Date(year, month, day);
+            updateDateDisplay();
+            closeDateModal();
+        }
+
+        function adjustDate(days) {
+            currentDate.setDate(currentDate.getDate() + days);
+            updateDateDisplay();
+        }
+
         // Close modal on outside click
         document.getElementById('timeModal').addEventListener('click', function(e) {
             if (e.target === this) {
                 closeTimeModal();
+            }
+        });
+
+        document.getElementById('dateModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeDateModal();
             }
         });
 
@@ -1294,9 +1444,8 @@
                 hour24 = 0;
             }
             
-            // Create date object for today with the specified time
-            const today = new Date();
-            const dateStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            // Create date object with the selected date and time
+            const dateStr = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}-${String(currentDate.getDate()).padStart(2, '0')}`;
             const timeStr = `${String(hour24).padStart(2, '0')}:${String(currentMinute).padStart(2, '0')}:00`;
             
             // Create date in source timezone
@@ -1379,6 +1528,53 @@
         document.getElementById('modalMinute').addEventListener('input', function() {
             if (this.value > 59) this.value = 59;
             if (this.value < 0) this.value = 0;
+        });
+
+        document.getElementById('modalMonth').addEventListener('input', function() {
+            if (this.value > 12) this.value = 12;
+            if (this.value < 1) this.value = 1;
+        });
+
+        document.getElementById('modalDay').addEventListener('input', function() {
+            if (this.value > 31) this.value = 31;
+            if (this.value < 1) this.value = 1;
+        });
+
+        document.getElementById('modalYear').addEventListener('input', function() {
+            if (this.value > 2030) this.value = 2030;
+            if (this.value < 2020) this.value = 2020;
+        });
+
+        // Quick date selection
+        document.getElementById('modalQuickDate').addEventListener('change', function() {
+            const today = new Date();
+            const value = this.value;
+            
+            switch(value) {
+                case 'today':
+                    currentDate = new Date(today);
+                    break;
+                case 'tomorrow':
+                    currentDate = new Date(today);
+                    currentDate.setDate(today.getDate() + 1);
+                    break;
+                case 'yesterday':
+                    currentDate = new Date(today);
+                    currentDate.setDate(today.getDate() - 1);
+                    break;
+                case 'nextweek':
+                    currentDate = new Date(today);
+                    currentDate.setDate(today.getDate() + 7);
+                    break;
+                case 'lastweek':
+                    currentDate = new Date(today);
+                    currentDate.setDate(today.getDate() - 7);
+                    break;
+            }
+            
+            document.getElementById('modalMonth').value = currentDate.getMonth() + 1;
+            document.getElementById('modalDay').value = currentDate.getDate();
+            document.getElementById('modalYear').value = currentDate.getFullYear();
         });
     </script>
 </body>
