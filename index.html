@@ -1644,10 +1644,11 @@
             const targetTimeStr = sourceDate.toLocaleString('en-US', targetOptions);
             const targetDateStr = sourceDate.toLocaleString('en-US', dateOptions);
             
-            // Calculate time difference correctly
-            const sourceOffset = getTimezoneOffset(sourceDate, fromTz);
-            const targetOffset = getTimezoneOffset(sourceDate, toTz);
-            const diffHours = Math.round((targetOffset - sourceOffset) / 60);
+            // Calculate time difference using a simpler method
+            const sourceTime = new Date(sourceDate.toLocaleString('en-US', { timeZone: fromTz }));
+            const targetTime = new Date(sourceDate.toLocaleString('en-US', { timeZone: toTz }));
+            const diffMs = targetTime.getTime() - sourceTime.getTime();
+            const diffHours = Math.round(diffMs / (1000 * 60 * 60));
             
             let diffText = '';
             if (diffHours !== 0) {
