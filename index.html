@@ -644,6 +644,100 @@
             .page-wrapper {
                 padding-bottom: 70px;
             }
+            
+            /* Enhanced mobile experience */
+            .timezone-search {
+                font-size: 16px; /* Prevents zoom on iOS */
+                padding: 12px 15px;
+            }
+            
+            .timezone-selector select {
+                font-size: 16px;
+                padding: 12px 15px;
+            }
+            
+            .convert-button {
+                padding: 15px;
+                font-size: 1.2em;
+            }
+            
+            .result-time {
+                font-size: 2em;
+            }
+            
+            .result-date {
+                font-size: 1.1em;
+            }
+            
+            /* Better touch targets */
+            .quick-time {
+                padding: 10px 18px;
+                min-height: 44px;
+            }
+            
+            .time-button, .date-button {
+                padding: 12px 20px;
+                min-height: 44px;
+            }
+        }
+        
+        /* Additional responsive breakpoints */
+        @media (max-width: 480px) {
+            .container {
+                padding: 20px;
+            }
+            
+            h1 {
+                font-size: 2em;
+            }
+            
+            .time-display {
+                font-size: 1.8em;
+                min-width: 180px;
+            }
+            
+            .date-display {
+                font-size: 1.3em;
+                min-width: 150px;
+            }
+            
+            .quick-times {
+                gap: 8px;
+            }
+            
+            .quick-time {
+                padding: 8px 14px;
+                font-size: 0.85em;
+            }
+        }
+        
+        @media (max-width: 360px) {
+            .container {
+                padding: 15px;
+            }
+            
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .time-display {
+                font-size: 1.6em;
+                min-width: 160px;
+            }
+            
+            .date-display {
+                font-size: 1.2em;
+                min-width: 130px;
+            }
+            
+            .quick-times {
+                gap: 6px;
+            }
+            
+            .quick-time {
+                padding: 6px 12px;
+                font-size: 0.8em;
+            }
         }
 
         .footer {
@@ -747,8 +841,8 @@
             </div>
             
             <div class="timezone-selector">
-                <input type="text" class="timezone-search" id="fromSearch" placeholder="Search country or time zone..." onkeyup="filterTimezones('fromTimezone', this.value)" onfocus="clearSearchInput('fromSearch')" onblur="handleSearchBlur('fromSearch', 'fromTimezone')">
-                <select id="fromTimezone" onchange="updateSearchInput('fromSearch', this)">
+                <input type="text" class="timezone-search" id="fromSearch" placeholder="Search country or time zone..." onkeyup="filterTimezones('fromTimezone', this.value)" onfocus="clearSearchInput('fromSearch')" onblur="handleSearchBlur('fromSearch', 'fromTimezone')" aria-label="Search source timezone" autocomplete="off">
+                <select id="fromTimezone" onchange="updateSearchInput('fromSearch', this)" aria-label="Select source timezone">
                     <optgroup label="UTC">
                         <option value="UTC">UTC - Coordinated Universal Time</option>
                     </optgroup>
@@ -764,6 +858,10 @@
                         <option value="America/Vancouver">PST/PDT - Canada (Pacific)</option>
                         <option value="America/Halifax">AST/ADT - Canada (Atlantic)</option>
                         <option value="America/St_Johns">NST/NDT - Canada (Newfoundland)</option>
+                        <option value="America/Regina">CST - Canada (Saskatchewan)</option>
+                        <option value="America/Whitehorse">PST/PDT - Canada (Yukon)</option>
+                        <option value="America/Yellowknife">MST/MDT - Canada (Northwest Territories)</option>
+                        <option value="America/Iqaluit">EST/EDT - Canada (Nunavut)</option>
                         <option value="America/Costa_Rica">CST - Costa Rica</option>
                         <option value="America/Havana">CST/CDT - Cuba</option>
                         <option value="America/Dominica">AST - Dominica</option>
@@ -778,6 +876,8 @@
                         <option value="America/Cancun">EST - Mexico (Eastern)</option>
                         <option value="America/Chihuahua">MST/MDT - Mexico (Mountain)</option>
                         <option value="America/Tijuana">PST/PDT - Mexico (Pacific)</option>
+                        <option value="America/Mazatlan">MST/MDT - Mexico (Pacific Coast)</option>
+                        <option value="America/Monterrey">CST/CDT - Mexico (Northeast)</option>
                         <option value="America/Managua">CST - Nicaragua</option>
                         <option value="America/Panama">EST - Panama</option>
                         <option value="America/St_Kitts">AST - Saint Kitts and Nevis</option>
@@ -791,6 +891,37 @@
                         <option value="America/Los_Angeles">PST/PDT - United States (Pacific)</option>
                         <option value="America/Anchorage">AKST/AKDT - United States (Alaska)</option>
                         <option value="Pacific/Honolulu">HST - United States (Hawaii)</option>
+                        <option value="America/Indiana/Indianapolis">EST/EDT - United States (Indiana)</option>
+                        <option value="America/Detroit">EST/EDT - United States (Michigan)</option>
+                        <option value="America/Kentucky/Louisville">EST/EDT - United States (Kentucky)</option>
+                        <option value="America/Kentucky/Monticello">CST/CDT - United States (Kentucky)</option>
+                        <option value="America/Indiana/Vincennes">CST/CDT - United States (Indiana)</option>
+                        <option value="America/Indiana/Winamac">EST/EDT - United States (Indiana)</option>
+                        <option value="America/Indiana/Marengo">EST/EDT - United States (Indiana)</option>
+                        <option value="America/Indiana/Petersburg">EST/EDT - United States (Indiana)</option>
+                        <option value="America/Indiana/Vevay">EST/EDT - United States (Indiana)</option>
+                        <option value="America/Indiana/Tell_City">CST/CDT - United States (Indiana)</option>
+                        <option value="America/Indiana/Knox">CST/CDT - United States (Indiana)</option>
+                        <option value="America/Menominee">CST/CDT - United States (Michigan)</option>
+                        <option value="America/North_Dakota/Center">CST/CDT - United States (North Dakota)</option>
+                        <option value="America/North_Dakota/New_Salem">CST/CDT - United States (North Dakota)</option>
+                        <option value="America/North_Dakota/Beulah">CST/CDT - United States (North Dakota)</option>
+                        <option value="America/Boise">MST/MDT - United States (Idaho)</option>
+                        <option value="America/Juneau">AKST/AKDT - United States (Alaska)</option>
+                        <option value="America/Sitka">AKST/AKDT - United States (Alaska)</option>
+                        <option value="America/Metlakatla">AKST/AKDT - United States (Alaska)</option>
+                        <option value="America/Yakutat">AKST/AKDT - United States (Alaska)</option>
+                        <option value="America/Nome">AKST/AKDT - United States (Alaska)</option>
+                        <option value="America/Adak">HST - United States (Alaska)</option>
+                        <option value="Pacific/Midway">SST - United States (Midway Islands)</option>
+                        <option value="America/Puerto_Rico">AST - United States (Puerto Rico)</option>
+                        <option value="America/Virgin">AST - United States (U.S. Virgin Islands)</option>
+                        <option value="America/Guam">ChST - United States (Guam)</option>
+                        <option value="Pacific/Saipan">ChST - United States (Northern Mariana Islands)</option>
+                        <option value="America/St_Barthelemy">AST - Saint Barthélemy</option>
+                        <option value="America/St_Martin">AST - Saint Martin</option>
+                        <option value="America/St_Pierre">PMST/PMDT - Saint Pierre and Miquelon</option>
+                        <option value="America/St_Thomas">AST - U.S. Virgin Islands</option>
                     </optgroup>
                     <optgroup label="South America">
                         <option value="America/Buenos_Aires">ART - Argentina</option>
@@ -934,9 +1065,16 @@
                         <option value="Asia/Phnom_Penh">ICT - Cambodia</option>
                         <option value="Asia/Shanghai">CST - China</option>
                         <option value="Asia/Urumqi">XJT - China (Xinjiang)</option>
+                        <option value="Asia/Harbin">CST - China (Heilongjiang)</option>
+                        <option value="Asia/Chongqing">CST - China (Chongqing)</option>
+                        <option value="Asia/Urumqi">XJT - China (Xinjiang)</option>
                         <option value="Asia/Tbilisi">GET - Georgia</option>
                         <option value="Asia/Hong_Kong">HKT - Hong Kong</option>
                         <option value="Asia/Kolkata">IST - India</option>
+                        <option value="Asia/Calcutta">IST - India (Kolkata)</option>
+                        <option value="Asia/Mumbai">IST - India (Mumbai)</option>
+                        <option value="Asia/Chennai">IST - India (Chennai)</option>
+                        <option value="Asia/Kolkata">IST - India (Kolkata)</option>
                         <option value="Asia/Jakarta">WIB - Indonesia (Western)</option>
                         <option value="Asia/Makassar">WITA - Indonesia (Central)</option>
                         <option value="Asia/Jayapura">WIT - Indonesia (Eastern)</option>
@@ -948,12 +1086,15 @@
                         <option value="Asia/Almaty">ALMT - Kazakhstan (Almaty)</option>
                         <option value="Asia/Aqtau">AQTT - Kazakhstan (Aqtau)</option>
                         <option value="Asia/Aqtobe">AQTT - Kazakhstan (Aqtobe)</option>
+                        <option value="Asia/Oral">ORAT - Kazakhstan (Oral)</option>
+                        <option value="Asia/Qyzylorda">QYZT - Kazakhstan (Qyzylorda)</option>
                         <option value="Asia/Kuwait">AST - Kuwait</option>
                         <option value="Asia/Bishkek">KGT - Kyrgyzstan</option>
                         <option value="Asia/Vientiane">ICT - Laos</option>
                         <option value="Asia/Beirut">EET/EEST - Lebanon</option>
                         <option value="Asia/Macau">CST - Macau</option>
                         <option value="Asia/Kuala_Lumpur">MYT - Malaysia</option>
+                        <option value="Asia/Kuching">MYT - Malaysia (Sarawak)</option>
                         <option value="Indian/Maldives">MVT - Maldives</option>
                         <option value="Asia/Ulaanbaatar">ULAT/ULAST - Mongolia</option>
                         <option value="Asia/Yangon">MMT - Myanmar</option>
@@ -976,8 +1117,37 @@
                         <option value="Asia/Ashgabat">TMT - Turkmenistan</option>
                         <option value="Asia/Dubai">GST - United Arab Emirates</option>
                         <option value="Asia/Tashkent">UZT - Uzbekistan</option>
+                        <option value="Asia/Samarkand">UZT - Uzbekistan (Samarkand)</option>
                         <option value="Asia/Ho_Chi_Minh">ICT - Vietnam</option>
                         <option value="Asia/Aden">AST - Yemen</option>
+                        <option value="Asia/Magadan">MAGT - Russia (Magadan)</option>
+                        <option value="Asia/Sakhalin">SAKT - Russia (Sakhalin)</option>
+                        <option value="Asia/Kamchatka">PETT - Russia (Kamchatka)</option>
+                        <option value="Asia/Anadyr">ANAT - Russia (Anadyr)</option>
+                        <option value="Asia/Vladivostok">VLAT - Russia (Vladivostok)</option>
+                        <option value="Asia/Irkutsk">IRKT - Russia (Irkutsk)</option>
+                        <option value="Asia/Krasnoyarsk">KRAT - Russia (Krasnoyarsk)</option>
+                        <option value="Asia/Novosibirsk">NOVT - Russia (Novosibirsk)</option>
+                        <option value="Asia/Yekaterinburg">YEKT - Russia (Yekaterinburg)</option>
+                        <option value="Asia/Samara">SAMT - Russia (Samara)</option>
+                        <option value="Europe/Kaliningrad">EET - Russia (Kaliningrad)</option>
+                        <option value="Europe/Moscow">MSK - Russia (Moscow)</option>
+                        <option value="Asia/Tashkent">UZT - Uzbekistan</option>
+                        <option value="Asia/Almaty">ALMT - Kazakhstan (Almaty)</option>
+                        <option value="Asia/Bishkek">KGT - Kyrgyzstan</option>
+                        <option value="Asia/Dushanbe">TJT - Tajikistan</option>
+                        <option value="Asia/Ashgabat">TMT - Turkmenistan</option>
+                        <option value="Asia/Baku">AZT - Azerbaijan</option>
+                        <option value="Asia/Tbilisi">GET - Georgia</option>
+                        <option value="Asia/Yerevan">AMT - Armenia</option>
+                        <option value="Asia/Tashkent">UZT - Uzbekistan</option>
+                        <option value="Asia/Almaty">ALMT - Kazakhstan (Almaty)</option>
+                        <option value="Asia/Bishkek">KGT - Kyrgyzstan</option>
+                        <option value="Asia/Dushanbe">TJT - Tajikistan</option>
+                        <option value="Asia/Ashgabat">TMT - Turkmenistan</option>
+                        <option value="Asia/Baku">AZT - Azerbaijan</option>
+                        <option value="Asia/Tbilisi">GET - Georgia</option>
+                        <option value="Asia/Yerevan">AMT - Armenia</option>
                     </optgroup>
                     <optgroup label="Oceania">
                         <option value="Pacific/Pago_Pago">SST - American Samoa</option>
@@ -1021,8 +1191,8 @@
                 <span>🎯</span> Target Time Zone
             </div>
             <div class="timezone-selector">
-                <input type="text" class="timezone-search" id="toSearch" placeholder="Search country or time zone..." onkeyup="filterTimezones('toTimezone', this.value)" onfocus="clearSearchInput('toSearch')" onblur="handleSearchBlur('toSearch', 'toTimezone')">
-                <select id="toTimezone" onchange="updateSearchInput('toSearch', this)">
+                <input type="text" class="timezone-search" id="toSearch" placeholder="Search country or time zone..." onkeyup="filterTimezones('toTimezone', this.value)" onfocus="clearSearchInput('toSearch')" onblur="handleSearchBlur('toSearch', 'toTimezone')" aria-label="Search target timezone" autocomplete="off">
+                <select id="toTimezone" onchange="updateSearchInput('toSearch', this)" aria-label="Select target timezone">
                     <optgroup label="UTC">
                         <option value="UTC">UTC - Coordinated Universal Time</option>
                     </optgroup>
@@ -1290,7 +1460,10 @@
             </div>
         </div>
         
-        <button class="convert-button" onclick="convertTime()">Convert Time</button>
+        <button class="convert-button" onclick="convertTime()" id="convertBtn">
+            <span class="btn-text">Convert Time</span>
+            <span class="btn-loading" style="display: none;">Converting...</span>
+        </button>
         
         <div class="result-section" id="result">
             <span class="placeholder">Select time and zones to convert</span>
@@ -1568,14 +1741,36 @@
             let firstMatch = null;
             let matchCount = 0;
             
-            // Show/hide options based on search
+            // Enhanced search with multiple criteria
             for (let i = 0; i < options.length; i++) {
                 const option = options[i];
                 const text = option.textContent.toLowerCase();
                 const value = option.value.toLowerCase();
                 
-                // Search in both the text content and the value
-                if (text.includes(searchText) || value.includes(searchText)) {
+                // Search in multiple fields: text content, value, and common abbreviations
+                const searchTerms = [
+                    text,
+                    value,
+                    text.replace(/[^a-z]/g, ''), // Remove special chars for better matching
+                    value.replace(/[^a-z]/g, ''),
+                    // Common timezone abbreviations
+                    text.includes('gmt') ? 'gmt' : '',
+                    text.includes('utc') ? 'utc' : '',
+                    text.includes('est') ? 'est' : '',
+                    text.includes('pst') ? 'pst' : '',
+                    text.includes('cst') ? 'cst' : '',
+                    text.includes('mst') ? 'mst' : '',
+                    text.includes('ist') ? 'ist' : '',
+                    text.includes('jst') ? 'jst' : '',
+                    text.includes('cet') ? 'cet' : '',
+                    text.includes('eet') ? 'eet' : '',
+                    text.includes('aest') ? 'aest' : '',
+                    text.includes('awst') ? 'awst' : ''
+                ].filter(term => term.length > 0);
+                
+                const isMatch = searchTerms.some(term => term.includes(searchText));
+                
+                if (isMatch) {
                     option.style.display = '';
                     matchCount++;
                     if (!foundMatch) {
@@ -1613,29 +1808,21 @@
                 searchInput.classList.add('selected');
             }
             
-            // If no matches found, show a message
-            if (!foundMatch && searchText.length > 0) {
-                const noResultsMsg = document.getElementById(selectId + 'NoResults');
-                if (!noResultsMsg) {
-                    const msg = document.createElement('div');
-                    msg.id = selectId + 'NoResults';
-                    msg.style.cssText = 'padding: 10px; color: #666; font-style: italic; text-align: center; background: #f5f5f5; border-radius: 5px; margin-top: 5px;';
-                    msg.textContent = 'No locations found. Try a different search term.';
-                    select.parentNode.appendChild(msg);
-                }
-            } else {
-                const noResultsMsg = document.getElementById(selectId + 'NoResults');
-                if (noResultsMsg) {
-                    noResultsMsg.remove();
-                }
+            // Handle "No locations found" message
+            const noResultsMsg = document.getElementById(selectId + 'NoResults');
+            
+            // Remove existing message first
+            if (noResultsMsg) {
+                noResultsMsg.remove();
             }
             
-            // Remove "No locations found" message when a location is selected
-            if (foundMatch && matchCount === 1) {
-                const noResultsMsg = document.getElementById(selectId + 'NoResults');
-                if (noResultsMsg) {
-                    noResultsMsg.remove();
-                }
+            // Show message only if no matches found and search text is not empty
+            if (!foundMatch && searchText.length > 0) {
+                const msg = document.createElement('div');
+                msg.id = selectId + 'NoResults';
+                msg.style.cssText = 'padding: 10px; color: #666; font-style: italic; text-align: center; background: #f5f5f5; border-radius: 5px; margin-top: 5px;';
+                msg.textContent = 'No locations found. Try a different search term.';
+                select.parentNode.appendChild(msg);
             }
         }
 
@@ -1724,6 +1911,12 @@
                         searchInput.style.color = '#2c5364';
                         searchInput.classList.add('selected');
                         resultsContainer.remove();
+                        
+                        // Remove "No locations found" message when a location is selected
+                        const noResultsMsg = document.getElementById(selectId + 'NoResults');
+                        if (noResultsMsg) {
+                            noResultsMsg.remove();
+                        }
                     });
                     
                     resultsContainer.appendChild(resultItem);
@@ -1781,64 +1974,116 @@
         }
 
         function convertTime() {
-            const fromTz = document.getElementById('fromTimezone').value;
-            const toTz = document.getElementById('toTimezone').value;
+            try {
+                // Show loading state
+                const convertBtn = document.getElementById('convertBtn');
+                const btnText = convertBtn.querySelector('.btn-text');
+                const btnLoading = convertBtn.querySelector('.btn-loading');
+                
+                btnText.style.display = 'none';
+                btnLoading.style.display = 'inline';
+                convertBtn.disabled = true;
+                
+                const fromTz = document.getElementById('fromTimezone').value;
+                const toTz = document.getElementById('toTimezone').value;
 
-            // Convert to 24-hour format
-            let hour24 = currentHour;
-            if (currentPeriod === 'PM' && currentHour !== 12) {
-                hour24 = currentHour + 12;
-            } else if (currentPeriod === 'AM' && currentHour === 12) {
-                hour24 = 0;
+                // Validate timezone selections
+                if (!fromTz || !toTz) {
+                    document.getElementById('result').innerHTML = `
+                        <div class="result-content">
+                            <div class="placeholder">Please select both source and target time zones</div>
+                        </div>
+                    `;
+                    // Reset button state
+                    btnText.style.display = 'inline';
+                    btnLoading.style.display = 'none';
+                    convertBtn.disabled = false;
+                    return;
+                }
+
+                // Convert to 24-hour format
+                let hour24 = currentHour;
+                if (currentPeriod === 'PM' && currentHour !== 12) {
+                    hour24 = currentHour + 12;
+                } else if (currentPeriod === 'AM' && currentHour === 12) {
+                    hour24 = 0;
+                }
+
+                // Get date parts
+                const year = currentDate.getFullYear();
+                const month = currentDate.getMonth() + 1; // Luxon months are 1-based
+                const day = currentDate.getDate();
+                const minute = currentMinute;
+
+                // Use Luxon to create a DateTime in the source timezone
+                const dtSource = luxon.DateTime.fromObject({
+                    year: year,
+                    month: month,
+                    day: day,
+                    hour: hour24,
+                    minute: minute,
+                    second: 0,
+                }, { zone: fromTz });
+
+                // Validate the DateTime
+                if (!dtSource.isValid) {
+                    throw new Error('Invalid date/time input');
+                }
+
+                // Convert to target timezone
+                const dtTarget = dtSource.setZone(toTz);
+
+                // Validate the target DateTime
+                if (!dtTarget.isValid) {
+                    throw new Error('Invalid target timezone');
+                }
+
+                // Format output with error handling
+                const targetTimeStr = dtTarget.toLocaleString(luxon.DateTime.TIME_SIMPLE) + ' ' + dtTarget.offsetNameShort;
+                const targetDateStr = dtTarget.toLocaleString({ weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+
+                // Calculate time difference in hours
+                const diffHours = Math.round(dtTarget.offset / 60 - dtSource.offset / 60);
+
+                // Get display names
+                const fromOption = document.querySelector(`#fromTimezone option[value="${fromTz}"]`);
+                const toOption = document.querySelector(`#toTimezone option[value="${toTz}"]`);
+                const fromText = fromOption ? fromOption.textContent : fromTz;
+                const toText = toOption ? toOption.textContent : toTz;
+                const fromLocation = fromText.split(' - ')[1] || fromText;
+                const toLocation = toText.split(' - ')[1] || toText;
+
+                let diffText = '';
+                if (diffHours !== 0) {
+                    const absDiff = Math.abs(diffHours);
+                    diffText = `<div class="result-diff">${toLocation} is ${absDiff} hour${absDiff !== 1 ? 's' : ''} ${diffHours > 0 ? 'ahead of' : 'behind'} ${fromLocation}</div>`;
+                }
+
+                document.getElementById('result').innerHTML = `
+                    <div class="result-content">
+                        <div class="result-time">${targetTimeStr}</div>
+                        <div class="result-date">${targetDateStr}</div>
+                        ${diffText}
+                    </div>
+                `;
+                
+                // Reset button state
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+                convertBtn.disabled = false;
+            } catch (error) {
+                console.error('Time conversion error:', error);
+                document.getElementById('result').innerHTML = `
+                    <div class="result-content">
+                        <div class="placeholder">Error: Unable to convert time. Please check your selections.</div>
+                    </div>
+                `;
+                
+                // Reset button state
+                btnText.style.display = 'inline';
+                btnLoading.style.display = 'none';
+                convertBtn.disabled = false;
             }
-
-            // Get date parts
-            const year = currentDate.getFullYear();
-            const month = currentDate.getMonth() + 1; // Luxon months are 1-based
-            const day = currentDate.getDate();
-            const minute = currentMinute;
-
-            // Use Luxon to create a DateTime in the source timezone
-            const dtSource = luxon.DateTime.fromObject({
-                year: year,
-                month: month,
-                day: day,
-                hour: hour24,
-                minute: minute,
-                second: 0,
-            }, { zone: fromTz });
-
-            // Convert to target timezone
-            const dtTarget = dtSource.setZone(toTz);
-
-            // Format output
-            const targetTimeStr = dtTarget.toLocaleString(luxon.DateTime.TIME_SIMPLE) + ' ' + dtTarget.offsetNameShort;
-            const targetDateStr = dtTarget.toLocaleString({ weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
-
-            // Calculate time difference in hours
-            const diffHours = Math.round(dtTarget.offset / 60 - dtSource.offset / 60);
-
-            // Get display names
-            const fromOption = document.querySelector(`#fromTimezone option[value="${fromTz}"]`);
-            const toOption = document.querySelector(`#toTimezone option[value="${toTz}"]`);
-            const fromText = fromOption ? fromOption.textContent : fromTz;
-            const toText = toOption ? toOption.textContent : toTz;
-            const fromLocation = fromText.split(' - ')[1] || fromText;
-            const toLocation = toText.split(' - ')[1] || toText;
-
-            let diffText = '';
-            if (diffHours !== 0) {
-                const absDiff = Math.abs(diffHours);
-                diffText = `<div class="result-diff">${toLocation} is ${absDiff} hour${absDiff !== 1 ? 's' : ''} ${diffHours > 0 ? 'ahead of' : 'behind'} ${fromLocation}</div>`;
-            }
-
-            document.getElementById('result').innerHTML = `
-                <div class="result-content">
-                    <div class="result-time">${targetTimeStr}</div>
-                    <div class="result-date">${targetDateStr}</div>
-                    ${diffText}
-                </div>
-            `;
         }
 
         // Validate inputs
@@ -1940,6 +2185,31 @@
             }
         });
 
+        // Debounced search function for better performance
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+
+        // Debounced version of filterTimezones
+        const debouncedFilterTimezones = debounce(filterTimezones, 150);
+
+        // Update search event handlers to use debounced version
+        document.getElementById('fromSearch').addEventListener('input', function() {
+            debouncedFilterTimezones('fromTimezone', this.value);
+        });
+
+        document.getElementById('toSearch').addEventListener('input', function() {
+            debouncedFilterTimezones('toTimezone', this.value);
+        });
+
         // Keyboard navigation for search results
         document.addEventListener('keydown', function(e) {
             const fromResults = document.getElementById('fromTimezoneLiveResults');
@@ -1948,6 +2218,22 @@
             if (e.key === 'Escape') {
                 if (fromResults) fromResults.remove();
                 if (toResults) toResults.remove();
+            }
+            
+            // Enter key to select first result
+            if (e.key === 'Enter') {
+                const activeElement = document.activeElement;
+                if (activeElement.id === 'fromSearch' && fromResults) {
+                    const firstResult = fromResults.querySelector('div[style*="padding: 12px 15px"]');
+                    if (firstResult) {
+                        firstResult.click();
+                    }
+                } else if (activeElement.id === 'toSearch' && toResults) {
+                    const firstResult = toResults.querySelector('div[style*="padding: 12px 15px"]');
+                    if (firstResult) {
+                        firstResult.click();
+                    }
+                }
             }
         });
     </script>
