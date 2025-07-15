@@ -398,7 +398,7 @@
             padding: 30px;
             border-radius: 20px;
             box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
-            max-width: 400px;
+            max-width: 450px;
             width: 90%;
             animation: modalIn 0.3s ease-out;
         }
@@ -429,17 +429,26 @@
         }
 
         .date-input-grid {
-            grid-template-columns: 1fr 1fr 1fr 1fr;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 15px;
+        }
+
+        .date-input-grid .time-input-item:last-child {
+            grid-column: 1 / -1;
         }
 
         .time-input-item {
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .time-input-label {
             font-size: 0.9em;
             color: #666;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
+            font-weight: 600;
         }
 
         .time-input {
@@ -450,6 +459,13 @@
             font-size: 1.5em;
             text-align: center;
             font-weight: 700;
+            min-height: 50px;
+        }
+
+        .time-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
         }
 
         .time-input:focus {
@@ -526,6 +542,26 @@
 
             .ad-banner {
                 height: 100px;
+            }
+
+            .modal-content {
+                padding: 25px;
+                max-width: 95%;
+            }
+
+            .date-input-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .date-input-grid .time-input-item:last-child {
+                grid-column: 1 / -1;
+            }
+
+            .time-input {
+                font-size: 1.3em;
+                padding: 12px;
+                min-height: 45px;
             }
         }
     </style>
@@ -1181,18 +1217,18 @@
             <div class="date-input-grid">
                 <div class="time-input-item">
                     <div class="time-input-label">Month</div>
-                    <input type="number" class="time-input" id="modalMonth" min="1" max="12" value="12">
+                    <input type="number" class="time-input" id="modalMonth" min="1" max="12" value="12" placeholder="MM">
                 </div>
                 <div class="time-input-item">
                     <div class="time-input-label">Day</div>
-                    <input type="number" class="time-input" id="modalDay" min="1" max="31" value="25">
+                    <input type="number" class="time-input" id="modalDay" min="1" max="31" value="25" placeholder="DD">
                 </div>
                 <div class="time-input-item">
                     <div class="time-input-label">Year</div>
-                    <input type="number" class="time-input" id="modalYear" min="2020" max="2030" value="2024">
+                    <input type="number" class="time-input" id="modalYear" min="2020" max="2030" value="2024" placeholder="YYYY">
                 </div>
                 <div class="time-input-item">
-                    <div class="time-input-label">Quick</div>
+                    <div class="time-input-label">Quick Selection</div>
                     <select class="time-input" id="modalQuickDate">
                         <option value="today">Today</option>
                         <option value="tomorrow">Tomorrow</option>
@@ -1533,16 +1569,39 @@
         document.getElementById('modalMonth').addEventListener('input', function() {
             if (this.value > 12) this.value = 12;
             if (this.value < 1) this.value = 1;
+            // Auto-advance to day field
+            if (this.value.length === 2) {
+                document.getElementById('modalDay').focus();
+            }
         });
 
         document.getElementById('modalDay').addEventListener('input', function() {
             if (this.value > 31) this.value = 31;
             if (this.value < 1) this.value = 1;
+            // Auto-advance to year field
+            if (this.value.length === 2) {
+                document.getElementById('modalYear').focus();
+            }
         });
 
         document.getElementById('modalYear').addEventListener('input', function() {
             if (this.value > 2030) this.value = 2030;
             if (this.value < 2020) this.value = 2020;
+        });
+
+        // Add padding to single digit inputs
+        function padNumberInput(input) {
+            if (input.value.length === 1) {
+                input.value = '0' + input.value;
+            }
+        }
+
+        document.getElementById('modalMonth').addEventListener('blur', function() {
+            padNumberInput(this);
+        });
+
+        document.getElementById('modalDay').addEventListener('blur', function() {
+            padNumberInput(this);
         });
 
         // Quick date selection
