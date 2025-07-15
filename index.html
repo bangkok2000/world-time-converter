@@ -1566,6 +1566,7 @@
             searchText = searchText.toLowerCase();
             let foundMatch = false;
             let firstMatch = null;
+            let matchCount = 0;
             
             // Show/hide options based on search
             for (let i = 0; i < options.length; i++) {
@@ -1576,6 +1577,7 @@
                 // Search in both the text content and the value
                 if (text.includes(searchText) || value.includes(searchText)) {
                     option.style.display = '';
+                    matchCount++;
                     if (!foundMatch) {
                         foundMatch = true;
                         firstMatch = option;
@@ -1598,16 +1600,17 @@
                 }
             }
             
+            // Update search input with live results
+            updateSearchResults(selectId, searchText, matchCount, firstMatch);
+            
             // If we found a match and it's the only one, auto-select it
-            if (foundMatch && firstMatch) {
-                const visibleOptions = Array.from(options).filter(opt => opt.style.display !== 'none');
-                if (visibleOptions.length === 1) {
-                    select.value = firstMatch.value;
-                    // Update search input to show the selected location
-                    const locationName = firstMatch.textContent.split(' - ')[1] || firstMatch.textContent;
-                    searchInput.value = locationName;
-                    searchInput.style.color = '#2c5364';
-                }
+            if (foundMatch && firstMatch && matchCount === 1) {
+                select.value = firstMatch.value;
+                // Update search input to show the selected location
+                const locationName = firstMatch.textContent.split(' - ')[1] || firstMatch.textContent;
+                searchInput.value = locationName;
+                searchInput.style.color = '#2c5364';
+                searchInput.classList.add('selected');
             }
             
             // If no matches found, show a message
@@ -1626,6 +1629,116 @@
                     noResultsMsg.remove();
                 }
             }
+            
+            // Remove "No locations found" message when a location is selected
+            if (foundMatch && matchCount === 1) {
+                const noResultsMsg = document.getElementById(selectId + 'NoResults');
+                if (noResultsMsg) {
+                    noResultsMsg.remove();
+                }
+            }
+        }
+
+        function updateSearchResults(selectId, searchText, matchCount, firstMatch) {
+            const searchInput = document.getElementById(selectId === 'fromTimezone' ? 'fromSearch' : 'toSearch');
+            const select = document.getElementById(selectId);
+            
+            // Remove existing live results
+            const existingResults = document.getElementById(selectId + 'LiveResults');
+            if (existingResults) {
+                existingResults.remove();
+            }
+            
+            // If search is empty, don't show results
+            if (searchText.length === 0) {
+                return;
+            }
+            
+            // Get visible options
+            const visibleOptions = Array.from(select.getElementsByTagName('option'))
+                .filter(opt => opt.style.display !== 'none')
+                .slice(0, 8); // Limit to 8 results for better UX
+            
+            if (visibleOptions.length > 0) {
+                // Create live results container
+                const resultsContainer = document.createElement('div');
+                resultsContainer.id = selectId + 'LiveResults';
+                resultsContainer.style.cssText = `
+                    position: absolute;
+                    top: 100%;
+                    left: 0;
+                    right: 0;
+                    background: white;
+                    border: 2px solid #e0e0e0;
+                    border-top: none;
+                    border-radius: 0 0 12px 12px;
+                    max-height: 300px;
+                    overflow-y: auto;
+                    z-index: 1000;
+                    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+                `;
+                
+                // Add results count
+                const countDiv = document.createElement('div');
+                countDiv.style.cssText = `
+                    padding: 8px 15px;
+                    background: #f8f9fa;
+                    border-bottom: 1px solid #e0e0e0;
+                    font-size: 0.9em;
+                    color: #666;
+                    font-weight: 600;
+                `;
+                countDiv.textContent = `${matchCount} location${matchCount !== 1 ? 's' : ''} found`;
+                resultsContainer.appendChild(countDiv);
+                
+                // Add result items
+                visibleOptions.forEach((option, index) => {
+                    const resultItem = document.createElement('div');
+                    resultItem.style.cssText = `
+                        padding: 12px 15px;
+                        cursor: pointer;
+                        border-bottom: 1px solid #f0f0f0;
+                        transition: background-color 0.2s ease;
+                        font-size: 0.95em;
+                    `;
+                    
+                    // Highlight search term in results
+                    const text = option.textContent;
+                    const highlightedText = highlightSearchTerm(text, searchText);
+                    resultItem.innerHTML = highlightedText;
+                    
+                    // Hover effect
+                    resultItem.addEventListener('mouseenter', function() {
+                        this.style.backgroundColor = '#f0f8ff';
+                    });
+                    
+                    resultItem.addEventListener('mouseleave', function() {
+                        this.style.backgroundColor = '';
+                    });
+                    
+                    // Click to select
+                    resultItem.addEventListener('click', function() {
+                        select.value = option.value;
+                        const locationName = option.textContent.split(' - ')[1] || option.textContent;
+                        searchInput.value = locationName;
+                        searchInput.style.color = '#2c5364';
+                        searchInput.classList.add('selected');
+                        resultsContainer.remove();
+                    });
+                    
+                    resultsContainer.appendChild(resultItem);
+                });
+                
+                // Insert after the search input
+                searchInput.parentNode.insertBefore(resultsContainer, searchInput.nextSibling);
+            }
+        }
+
+        function highlightSearchTerm(text, searchTerm) {
+            if (!searchTerm) return text;
+            
+            const regex = new RegExp(`(${searchTerm})`, 'gi');
+            return text.replace(regex, '<mark style="background-color: #fff3cd; padding: 1px 2px; border-radius: 2px;">$1</mark>');
         }
 
         function clearSearchInput(inputId) {
@@ -1807,6 +1920,35 @@
             document.getElementById('modalMonth').value = currentDate.getMonth() + 1;
             document.getElementById('modalDay').value = currentDate.getDate();
             document.getElementById('modalYear').value = currentDate.getFullYear();
+        });
+
+        // Close search results when clicking outside
+        document.addEventListener('click', function(e) {
+            const fromResults = document.getElementById('fromTimezoneLiveResults');
+            const toResults = document.getElementById('toTimezoneLiveResults');
+            const fromSearch = document.getElementById('fromSearch');
+            const toSearch = document.getElementById('toSearch');
+            
+            // Close from search results
+            if (fromResults && !fromSearch.contains(e.target) && !fromResults.contains(e.target)) {
+                fromResults.remove();
+            }
+            
+            // Close to search results
+            if (toResults && !toSearch.contains(e.target) && !toResults.contains(e.target)) {
+                toResults.remove();
+            }
+        });
+
+        // Keyboard navigation for search results
+        document.addEventListener('keydown', function(e) {
+            const fromResults = document.getElementById('fromTimezoneLiveResults');
+            const toResults = document.getElementById('toTimezoneLiveResults');
+            
+            if (e.key === 'Escape') {
+                if (fromResults) fromResults.remove();
+                if (toResults) toResults.remove();
+            }
         });
     </script>
 </body>
